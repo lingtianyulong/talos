@@ -8,8 +8,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     auto dlg = new LoginDialog();
-    dlg->exec();
-
+    if (dlg->exec() != QDialog::Accepted)
+    {
+        return 0;
+    }
 
     MainWindow w;
     w.show();
