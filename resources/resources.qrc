@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="fonts">
+        <file alias="iconfont.ttf">fonts/iconfont.ttf</file>
+    </qresource>
+    <qresource prefix="icons">
+        <file alias="icon.ico">icons/icon.ico</file>
+    </qresource>
+    <qresource prefix="avatar">
+        <file alias="avatar.png">avatar/avatar.png</file>
+    </qresource>
+    <qresource>
+        <file>theme/buttons.qss</file>
+        <file>theme/checkbox.qss</file>
+        <file>theme/menubar.qss</file>
+    </qresource>
+    <qresource>
+        <file>icons/checkbox/check_white.png</file>
+        <file>icons/checkbox/line_white.png</file>
+    </qresource>
+</RCC>

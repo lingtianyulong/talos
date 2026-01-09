@@ -1,0 +1,12 @@
+[package]
+name = "secure_store"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# 默认启用 Windows 原生凭据存储，否则 keyring 会退回到内存 mock，set/get 不持久
+keyring = { version = "3.6.3", features = ["windows-native"] }
+thiserror = "2.0"
