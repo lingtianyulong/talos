@@ -1,6 +1,13 @@
+<!DOCTYPE RCC>
 <RCC>
-    <qresource prefix="/">
-        <file>qml/login.qml</file>
-        <file>qml/components/FlatTextField.qml</file>
-    </qresource>
+  <qresource prefix="/">
+    <file>qml/login.qml</file>
+    <file>qml/components/FlatTextField.qml</file>
+    <file>qml/components/InputUser.qml</file>
+    <file>qml/components/InputPassword.qml</file>
+    <file>qml/components/InputBase.qml</file>
+  </qresource>
+  <qresource prefix="/font">
+    <file alias="iconfont.ttf">iconfont/iconfont.ttf</file>
+  </qresource>
 </RCC>

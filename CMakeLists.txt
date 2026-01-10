@@ -37,11 +37,13 @@ qt_add_executable(talos
     resources/resource.qrc
 )
 
+add_subdirectory(utils)
 add_subdirectory(ui)
 
 
 target_link_libraries(talos
     PRIVATE
+        utils
         ui
         Qt::Core
         Qt::Widgets

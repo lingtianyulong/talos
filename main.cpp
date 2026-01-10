@@ -6,9 +6,10 @@
 #include <QtQuickControls2/QtQuickControls2>
 
 int main(int argc, char *argv[]) {
-  QApplication a(argc, argv);
 
-  QQuickStyle::setStyle("Material");
+  QQuickStyle::setStyle("Fusion");
+
+  QApplication a(argc, argv);
 
   auto dlg = new LoginDialog();
   if (dlg->exec() != QDialog::Accepted) {

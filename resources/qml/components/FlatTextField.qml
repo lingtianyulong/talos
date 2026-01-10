@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 TextField {
     id: flat_input
@@ -13,7 +13,7 @@ TextField {
 
     objectName: _objectName
     width: _width >= 0 ? _width : (parent ? parent.width : implicitWidth)
-    height: 40
+    height: parent ? parent.height : implicitHeight
     placeholderText: _placeholderText
     placeholderTextColor: "#cccccc"
     font.pixelSize: 14
@@ -58,8 +58,8 @@ TextField {
     // ======== 背景扁平化 ========
     background: Rectangle {
         color: "transparent"
-        radius: 5
+        radius: 0
         border.color: "#cccccc"
-        border.width: 1
+        border.width: 0
     }
 }

@@ -10,6 +10,11 @@ Item {
     signal closeRequested
     signal loginRequested(string username, string password)
 
+    FontLoader {
+        id: iconFont
+        source: "qrc:/font/iconfont.ttf"
+    }
+
     // 整个窗口透明度
     opacity: 0.0
 
@@ -38,7 +43,9 @@ Item {
         implicitHeight: 32
         width: implicitWidth
         height: implicitHeight
-        text: "×"
+        font.family: iconFont.name
+        font.pixelSize: 14
+        text: "\ue624"
         hoverEnabled: true
         onClicked: root.fadeOut()
         background: Rectangle {
@@ -89,21 +96,15 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
             }
 
-            FlatTextField {
+            InputUser {
                 id: usernameField
-                _objectName: "user_input"
                 _width: parent.width
-                _placeholderText: "请输入用户名"
                 _focus: true
             }
 
-            FlatTextField {
+            InputPassword {
                 id: passwordField
-                _objectName: "pwd_input"
                 _width: parent.width
-                _placeholderText: "请输入密码"
-                _focus: true
-                echoMode: TextInput.Password
             }
 
             Button {
@@ -123,7 +124,7 @@ Item {
                     elide: Text.ElideRight
                 }
 
-                onClicked: root.loginRequested(usernameField.text, passwordField.text)
+                onClicked: root.loginRequested(usernameField._text, passwordField._text)
 
                 background: Rectangle {
                     color: {
