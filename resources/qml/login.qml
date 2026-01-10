@@ -109,9 +109,10 @@ Item {
 
             Button {
                 id: loginButton
-                width: 200
+                width: 180
                 height: 50
                 text: "登录"
+                font.pixelSize: 16
                 anchors.horizontalCenter: parent.horizontalCenter
                 hoverEnabled: true
 

@@ -16,10 +16,11 @@ Item {
     property string _icon: ""
     property string _buttonIcon: ""     // 功能性按钮图标，如：清除输入、显示密码
     property bool _focus: false
-    property string _text: ""
+    property string _text: ""           // TextField 中输入的文本
     property string _placeholderText: ""
 
-    property alias _inputText: inputField // 暴露内部控件
+    property alias _inputField: inputField // 暴露内部控件
+    property alias _button: btn // 暴露功能性按钮
 
     Rectangle {
         anchors.fill: parent
@@ -58,14 +59,21 @@ Item {
             text: root._buttonIcon
             width: 40
             height: parent ? parent.height : implicitHeight
-
             font.family: iconFont.name
             font.pixelSize: 18
-
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            visible: true
+            visible: false
             hoverEnabled: true
+
+            contentItem: Text {
+                text: btn.text
+                font: btn.font
+                color: "#666666"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+            }
 
             background: Rectangle {
                 color: btn.hovered ? "#eaeaea" : "transparent"
