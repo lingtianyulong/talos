@@ -79,6 +79,8 @@ Item {
                 height: 50
                 text: "登录"
                 anchors.horizontalCenter: parent.horizontalCenter
+                hoverEnabled: true
+
                 contentItem: Text {
                     text: loginButton.text
                     font: loginButton.font
@@ -89,7 +91,15 @@ Item {
                 }
 
                 background: Rectangle {
-                    color: "#409eff"
+                    color: {
+                        if (loginButton.pressed) {
+                            return "#3a8ee6";
+                        } else if (loginButton.hovered) {
+                            return "#66b1ff";
+                        } else {
+                            return "#409eff";
+                        }
+                    }
                     radius: 5
                     border.width: 0
                 }
