@@ -1,12 +1,14 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
 #include <QMetaObject>
+#include <QPointer>
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <QQuickWidget>
 #include <QScopedValueRollback>
 #include <QUrl>
 #include <QVBoxLayout>
+
 
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
@@ -35,7 +37,7 @@ LoginDialog::LoginDialog(QWidget *parent)
           });
 
   // 布局
-  auto *layout = new QVBoxLayout(this);
+  QPointer layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(_quick);
   setLayout(layout);
