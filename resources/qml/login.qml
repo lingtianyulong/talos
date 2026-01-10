@@ -112,7 +112,7 @@ Item {
                 width: 180
                 height: 50
                 text: "登录"
-                font.pixelSize: 16
+                font.pixelSize: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 hoverEnabled: true
 
