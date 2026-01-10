@@ -18,10 +18,6 @@ public:
   QString username() const;
   QString password() const;
 
-  // signals:
-  //   void credentialsSubmitted(const QString &username, const QString
-  //   &password);
-
 protected:
   void showEvent(QShowEvent *event) override;
   void closeEvent(QCloseEvent *event) override;
