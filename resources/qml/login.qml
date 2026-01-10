@@ -7,6 +7,8 @@ Item {
     id: root
     width: 520
     height: 480
+    signal closeRequested
+    signal loginRequested(string username, string password)
 
     // 整个窗口透明度
     opacity: 0.0
@@ -24,6 +26,35 @@ Item {
                 position: 1.0
                 color: "#7B5CB8"
             }
+        }
+    }
+
+    Button {
+        id: closeButton
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.margins: 16
+        implicitWidth: 32
+        implicitHeight: 32
+        width: implicitWidth
+        height: implicitHeight
+        text: "×"
+        hoverEnabled: true
+        onClicked: root.fadeOut()
+        background: Rectangle {
+            anchors.fill: parent
+            color: closeButton.hovered ? Qt.rgba(1, 1, 1, 0.4) : "transparent"
+            radius: width / 2
+            border.color: "white"
+            border.width: 1
+        }
+        contentItem: Text {
+            anchors.fill: parent
+            text: closeButton.text
+            font: closeButton.font
+            color: "#ffffff"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 
@@ -59,6 +90,7 @@ Item {
             }
 
             FlatTextField {
+                id: usernameField
                 _objectName: "user_input"
                 _width: parent.width
                 _placeholderText: "请输入用户名"
@@ -66,6 +98,7 @@ Item {
             }
 
             FlatTextField {
+                id: passwordField
                 _objectName: "pwd_input"
                 _width: parent.width
                 _placeholderText: "请输入密码"
@@ -89,6 +122,8 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                 }
+
+                onClicked: root.loginRequested(usernameField.text, passwordField.text)
 
                 background: Rectangle {
                     color: {
@@ -135,6 +170,6 @@ Item {
         to: 0
         duration: 300
         easing.type: Easing.InCubic
-        onStopped: Qt.quit() // 通知关闭窗口
+        onStopped: root.closeRequested()
     }
 }

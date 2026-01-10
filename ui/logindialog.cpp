@@ -1,11 +1,12 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
 #include <QMetaObject>
+#include <QQmlEngine>
 #include <QQuickItem>
 #include <QQuickWidget>
+#include <QScopedValueRollback>
 #include <QUrl>
 #include <QVBoxLayout>
-#include <QQmlEngine>
 
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
@@ -24,8 +25,15 @@ LoginDialog::LoginDialog(QWidget *parent)
   _quick = new QQuickWidget(this);
   _quick->setResizeMode(QQuickWidget::SizeRootObjectToView);
   _quick->setClearColor(Qt::transparent);
-  _quick->engine()->addImportPath("qrc:/qml/components");
+  //   _quick->engine()->addImportPath("qrc:/qml/components");
   _quick->setSource(QUrl("qrc:/qml/login.qml"));
+  connectQmlSignals();
+  connect(_quick, &QQuickWidget::statusChanged, this,
+          [this](QQuickWidget::Status status) {
+            if (status == QQuickWidget::Ready) {
+              connectQmlSignals();
+            }
+          });
 
   // 布局
   auto *layout = new QVBoxLayout(this);
@@ -45,7 +53,42 @@ void LoginDialog::showEvent(QShowEvent *event) {
 
 void LoginDialog::closeEvent(QCloseEvent *event) {
   QDialog::closeEvent(event);
+  if (_closingFromQml) {
+    return;
+  }
   if (auto *obj = _quick->rootObject()) {
     QMetaObject::invokeMethod(obj, "fadeOut");
   }
 }
+
+void LoginDialog::connectQmlSignals() {
+  if (!_quick) {
+    return;
+  }
+  if (auto *obj = _quick->rootObject()) {
+    QObject::connect(obj, SIGNAL(closeRequested()), this,
+                     SLOT(handleCloseRequested()), Qt::UniqueConnection);
+    QObject::connect(obj, SIGNAL(loginRequested(QString, QString)), this,
+                     SLOT(handleLoginRequested(QString, QString)),
+                     Qt::UniqueConnection);
+  }
+}
+
+void LoginDialog::handleCloseRequested() {
+  if (_closingFromQml) {
+    return;
+  }
+  QScopedValueRollback<bool> guard(_closingFromQml, true);
+  close();
+}
+
+void LoginDialog::handleLoginRequested(const QString &username,
+                                       const QString &password) {
+  _username = username;
+  _password = password;
+  //   emit credentialsSubmitted(_username, _password);
+}
+
+QString LoginDialog::username() const { return _username; }
+
+QString LoginDialog::password() const { return _password; }

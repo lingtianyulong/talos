@@ -3,26 +3,42 @@
 
 #include <QDialog>
 #include <QQuickWidget>
+#include <QString>
 
 namespace Ui {
 class LoginDialog;
 }
 
-class LoginDialog : public QDialog
-{
-    Q_OBJECT
+class LoginDialog : public QDialog {
+  Q_OBJECT
 
 public:
-    explicit LoginDialog(QWidget *parent = nullptr);
-    ~LoginDialog();
+  explicit LoginDialog(QWidget *parent = nullptr);
+  ~LoginDialog();
+  QString username() const;
+  QString password() const;
+
+  // signals:
+  //   void credentialsSubmitted(const QString &username, const QString
+  //   &password);
 
 protected:
-    void showEvent(QShowEvent *event) override;
-    void closeEvent(QCloseEvent *event) override;
+  void showEvent(QShowEvent *event) override;
+  void closeEvent(QCloseEvent *event) override;
 
 private:
-    Ui::LoginDialog *ui;
-    QQuickWidget *_quick = nullptr;
+  void connectQmlSignals();
+
+private slots:
+  void handleCloseRequested();
+  void handleLoginRequested(const QString &username, const QString &password);
+
+private:
+  Ui::LoginDialog *ui;
+  QQuickWidget *_quick = nullptr;
+  bool _closingFromQml = false;
+  QString _username;
+  QString _password;
 };
 
 #endif // LOGINDIALOG_H
