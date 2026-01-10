@@ -74,17 +74,25 @@ Item {
             }
 
             Button {
-                width: parent.width
-                height: 40
+                id: loginButton
+                width: 200
+                height: 50
                 text: "登录"
-                // palette.text: "#ffffff"
+                anchors.horizontalCenter: parent.horizontalCenter
+                contentItem: Text {
+                    text: loginButton.text
+                    font: loginButton.font
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
 
-                // background: Rectangle {
-                //     color: "transparent"
-                //     radius: 5
-                //     border.color: "#409eff"
-                //     border.width: 1
-                // }
+                background: Rectangle {
+                    color: "#409eff"
+                    radius: 5
+                    border.width: 0
+                }
             }
         }
     }
