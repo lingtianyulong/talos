@@ -1,19 +1,21 @@
 #include "mainwindow.h"
 
-#include <QApplication>
 #include "ui/logindialog.h"
+#include <QApplication>
+#include <QtQuickControls2/QQuickStyle>
+#include <QtQuickControls2/QtQuickControls2>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
+int main(int argc, char *argv[]) {
+  QApplication a(argc, argv);
 
-    auto dlg = new LoginDialog();
-    if (dlg->exec() != QDialog::Accepted)
-    {
-        return 0;
-    }
+  QQuickStyle::setStyle("Material");
 
-    MainWindow w;
-    w.show();
-    return a.exec();
+  auto dlg = new LoginDialog();
+  if (dlg->exec() != QDialog::Accepted) {
+    return 0;
+  }
+
+  MainWindow w;
+  w.show();
+  return a.exec();
 }

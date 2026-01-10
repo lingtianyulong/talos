@@ -5,6 +5,7 @@
 #include <QQuickWidget>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <QQmlEngine>
 
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
@@ -23,6 +24,7 @@ LoginDialog::LoginDialog(QWidget *parent)
   _quick = new QQuickWidget(this);
   _quick->setResizeMode(QQuickWidget::SizeRootObjectToView);
   _quick->setClearColor(Qt::transparent);
+  _quick->engine()->addImportPath("qrc:/qml/components");
   _quick->setSource(QUrl("qrc:/qml/login.qml"));
 
   // 布局

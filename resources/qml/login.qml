@@ -1,6 +1,7 @@
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Effects
+import "./components"
 
 Item {
     id: root
@@ -8,7 +9,7 @@ Item {
     height: 480
 
     // 整个窗口透明度
-    // opacity: 0.0
+    opacity: 0.0
 
     // ===== 背景 =====
     Rectangle {
@@ -45,9 +46,11 @@ Item {
 
         Column {
             anchors.centerIn: parent
+            width: parent.width - 80
             spacing: 16
 
             Text {
+                width: parent.width
                 text: "用户登录"
                 font.pixelSize: 20
                 font.bold: true
@@ -55,21 +58,33 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
             }
 
-            TextField {
-                width: 260
-                placeholderText: "用户名"
+            FlatTextField {
+                _objectName: "user_input"
+                _width: parent.width
+                _placeholderText: "请输入用户名"
+                _focus: true
             }
 
-            TextField {
-                width: 260
-                placeholderText: "密码"
+            FlatTextField {
+                _objectName: "pwd_input"
+                _width: parent.width
+                _placeholderText: "请输入密码"
+                _focus: true
                 echoMode: TextInput.Password
             }
 
             Button {
-                width: 260
+                width: parent.width
                 height: 40
                 text: "登录"
+                // palette.text: "#ffffff"
+
+                // background: Rectangle {
+                //     color: "transparent"
+                //     radius: 5
+                //     border.color: "#409eff"
+                //     border.width: 1
+                // }
             }
         }
     }
