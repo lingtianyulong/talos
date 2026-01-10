@@ -2,6 +2,7 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
+#include <QQuickWidget>
 
 namespace Ui {
 class LoginDialog;
@@ -15,8 +16,13 @@ public:
     explicit LoginDialog(QWidget *parent = nullptr);
     ~LoginDialog();
 
+protected:
+    void showEvent(QShowEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     Ui::LoginDialog *ui;
+    QQuickWidget *_quick = nullptr;
 };
 
 #endif // LOGINDIALOG_H

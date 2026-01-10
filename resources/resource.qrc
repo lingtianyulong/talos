@@ -1,0 +1,6 @@
+<!DOCTYPE RCC>
+<RCC>
+  <qresource prefix="/qml">
+    <file alias="login.qml">qml/login.qml</file>
+  </qresource>
+</RCC>

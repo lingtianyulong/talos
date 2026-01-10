@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Quick QuickWidgets)
 
 file(GLOB SOURCES *.cpp *.h *.ui)
 
@@ -16,4 +16,6 @@ target_link_libraries(ui
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt::Quick
+        Qt::QuickWidgets
 )

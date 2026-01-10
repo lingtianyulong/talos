@@ -12,7 +12,7 @@ set(CMAKE_AUTORCC ON)
 set(QT_QPA_PLATFORM_PLUGIN_PATH "D:/Qt/6.8.3/msvc2022_64/plugins/platforms")
 
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Quick QuickWidgets)
 
 qt_standard_project_setup()
 
@@ -22,6 +22,7 @@ qt_add_executable(talos
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    resources/resource.qrc
 )
 
 add_subdirectory(ui)
@@ -32,6 +33,8 @@ target_link_libraries(talos
         ui
         Qt::Core
         Qt::Widgets
+        Qt::Quick
+        Qt::QuickWidgets
 )
 
 include(GNUInstallDirs)
