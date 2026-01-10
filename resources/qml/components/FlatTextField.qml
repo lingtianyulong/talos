@@ -26,7 +26,7 @@ TextField {
     inputMethodHints: Qt.ImhNone
     focus: _focus
 
-    // 自定义光标
+    // ======== 自定义光标 ========
     cursorDelegate: Rectangle {
         width: 2
         color: "#666666"
@@ -36,6 +36,7 @@ TextField {
         y: flat_input.cursorRectangle.y
     }
 
+    // ======== 光标闪烁 ========
     Timer {
         id: cursorBlinkTimer
         interval: 500
@@ -54,6 +55,7 @@ TextField {
         }
     }
 
+    // ======== 背景扁平化 ========
     background: Rectangle {
         color: "transparent"
         radius: 5
