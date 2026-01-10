@@ -85,7 +85,6 @@ void LoginDialog::handleLoginRequested(const QString &username,
                                        const QString &password) {
   _username = username;
   _password = password;
-  //   emit credentialsSubmitted(_username, _password);
 }
 
 QString LoginDialog::username() const { return _username; }
