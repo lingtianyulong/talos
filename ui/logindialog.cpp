@@ -80,6 +80,7 @@ void LoginDialog::handleClosed() {
     return;
   }
   QScopedValueRollback<bool> guard(_closingFromQml, true);
+  reject();
   close();
 }
 
@@ -87,8 +88,7 @@ void LoginDialog::handleLogin(const QString &username,
                               const QString &password) {
 
   if (username.isEmpty() || password.isEmpty()) {
-    QMessageBox::warning(this, "Warning",
-                         "用户名或密码为空, 请选输入用户名或密码!");
+    MessageBox::warning("用户名或密码为空, 请选输入用户名或密码!", this);
     reject();
   }
 
