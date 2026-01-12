@@ -1,0 +1,105 @@
+/* ------------------- Flat Base ------------------- */
+QPushButton[btnType] {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    background: transparent;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Hover & Pressed for all flat buttons */
+QPushButton[btnType]:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+QPushButton[btnType]:pressed {
+    background: rgba(0,0,0,0.1);
+}
+
+/* ------------------- Default ------------------- */
+QPushButton[btnType="default"] {
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #dcdfe6;
+}
+
+QPushButton[btnType="default"]:hover {
+    background: #f5f7fa;
+}
+
+QPushButton[btnType="default"]:pressed {
+    background: #e4e7ed;
+}
+
+/* ------------------- Primary ------------------- */
+QPushButton[btnType="primary"] {
+    background: #409eff;
+    color: #ffffff;
+}
+
+QPushButton[btnType="primary"]:hover {
+    background: #66b1ff;
+}
+
+QPushButton[btnType="primary"]:pressed {
+    background: #3a8ee6;
+}
+
+/* ------------------- Success ------------------- */
+QPushButton[btnType="success"] {
+    background: #67c23a;
+    color: #ffffff;
+}
+
+QPushButton[btnType="success"]:hover {
+    background: #85ce61;
+}
+
+QPushButton[btnType="success"]:pressed {
+    background: #5daf34;
+}
+
+/* ------------------- Info ------------------- */
+QPushButton[btnType="info"] {
+    background: #909399;
+    color: #ffffff;
+}
+
+QPushButton[btnType="info"]:hover {
+    background: #a6a9ad;
+}
+
+QPushButton[btnType="info"]:pressed {
+    background: #828488;
+}
+
+/* ------------------- Warning ------------------- */
+QPushButton[btnType="warning"] {
+    background: #e6a23c;
+    color: #ffffff;
+}
+
+QPushButton[btnType="warning"]:hover {
+    background: #ebb563;
+}
+
+QPushButton[btnType="warning"]:pressed {
+    background: #d48806;
+}
+
+/* ------------------- Danger ------------------- */
+QPushButton[btnType="danger"] {
+    background: #f56c6c;
+    color: #ffffff;
+}
+
+QPushButton[btnType="danger"]:hover {
+    background: #f78989;
+}
+
+QPushButton[btnType="danger"]:pressed {
+    background: #dd6161;
+}
+
+

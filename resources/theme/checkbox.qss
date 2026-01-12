@@ -1,0 +1,52 @@
+/* --- 基础文字颜色 --- */
+QCheckBox {
+    spacing: 6px;
+    color: #303133;
+    font-size: 14px;
+}
+
+/* --- 复选框未选中 --- */
+QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #dcdfe6;
+    border-radius: 2px;
+    background: #ffffff;
+}
+
+/* --- hover 状态（鼠标悬停） --- */
+QCheckBox:hover::indicator {
+    border-color: #409EFF;
+}
+
+/* --- 选中状态 --- */
+QCheckBox::indicator:checked {
+    border-color: #409EFF;
+    background: #409EFF;
+    image: url(":/icons/checkbox/check_white.png");  /* 白色勾图标 */
+}
+
+/* --- 半选中状态 --- */
+QCheckBox::indicator:indeterminate {
+    background: #409EFF;
+    border-color: #409EFF;
+    image: url(":/icons/line_white.svg"); /* 区中横线图标 */
+}
+
+/* --- 禁用状态（文字）--- */
+QCheckBox:disabled {
+    color: #C0C4CC;
+}
+
+/* --- 禁用状态（方框）--- */
+QCheckBox::indicator:disabled {
+    border-color: #E4E7ED;
+    background: #F5F7FA;
+}
+
+/* --- 禁用 + 选中 --- */
+QCheckBox::indicator:checked:disabled {
+    background: #C0C4CC;
+    border-color: #C0C4CC;
+    image: url(":/icons/elementui/check_white.svg");
+}

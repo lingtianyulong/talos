@@ -1,0 +1,16 @@
+[package]
+name = "database"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# utils = { path = "../utils" }
+
+diesel = { version = "2.3", features = ["sqlite", "chrono", "returning_clauses_for_sqlite_3_35"] }
+libsqlite3-sys = { version = "0.35", features = ["bundled"] }
+tokio = { version = "1.48", features = ["full"] }
+chrono = { version = "0.4", features = ["serde"] }
+

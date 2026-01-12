@@ -1,0 +1,119 @@
+/* QMenuBar 本体（透明/纯色） --- 浅色主题 */
+QMenuBar[theme="light"] {
+    background: transparent;     /* 或者使用 #ffffff */
+    border: none;
+    padding: 0px;
+    spacing: 4px;               /* 菜单项间距 */
+}
+
+/* 菜单栏上的每个项（顶部条目） */
+QMenuBar[theme="light"]::item {
+    background: transparent;
+    padding: 6px 12px;
+    margin: 0 2px;
+    border-radius: 4px;
+    color: #222222;
+    /* font-size: 13px; 可以按需设置 */
+}
+
+/* 鼠标移上去的效果（扁平的高亮） */
+QMenuBar[theme="light"]::item:selected {
+    background: rgba(0,0,0,0.06); /* 轻微背景高亮 */
+    color: #000000;
+}
+
+/* 按下时的效果 */
+QMenuBar[theme="light"]::item:pressed {
+    background: rgba(0,0,0,0.12);
+}
+
+/* 下拉菜单（QMenu）整体样式 */
+QMenu[theme="light"] {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+    padding: 6px 4px;           /* 菜单内边距 */
+    /* remove native shadow if any (Qt doesn't expose box-shadow) */
+}
+
+/* QMenu 中的条目 */
+QMenu[theme="light"]::item {
+    background: transparent;
+    padding: 5px 18px;         /* 左右内边距：图标后 + 文本 */
+    min-width: 10px;
+    max-width: 50px;
+}
+
+/* 鼠标悬停/选中项（扁平高亮） */
+QMenu[theme="light"]::item:selected {
+    background: rgba(0,0,0,0.06);
+    color: #000;
+}
+
+/* 禁用项 */
+QMenu[theme="light"]::item:disabled {
+    color: #9a9a9a;
+}
+
+/* 分隔线 */
+QMenu[theme="light"]::separator {
+    height: 1px;
+    background: #eaeaea;
+    margin: 3px 3px;
+}
+
+/* 子菜单箭头（如果你用的是默认箭头） */
+QMenu[theme="light"]::right-arrow {
+    image: none; /* 如需自定义图标，可以指定 image:url(...) */
+}
+
+/* 如果菜单里有 icon，控制图标显示的间距 */
+QMenu[theme="light"]::icon {
+    padding-left: 6px;
+    padding-right: 8px;
+}
+
+/* 深色 主题 */
+
+QMenuBar[theme="dark"] {
+    background: transparent;
+    border: none;
+    spacing: 6px;
+}
+
+QMenuBar[theme="dark"]::item {
+    background: transparent;
+    padding: 6px 12px;
+    color: #eaeaea;
+}
+
+QMenuBar[theme="dark"]::item:selected {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+}
+
+QMenu[theme="dark"] {
+    background: #222327;
+    border: 1px solid #2e2e33;
+    border-radius: 6px;
+    padding: 6px 4px;
+    color: #eaeaea;
+}
+
+QMenu[theme="dark"]::item {
+    background: transparent;
+    padding: 6px 18px;
+    min-width: 180px;
+}
+
+QMenu[theme="dark"]::item:selected {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+}
+
+QMenu[theme="dark"]::separator {
+    height: 1px;
+    background: #2e2e33;
+    margin: 6px 8px;
+}
+
