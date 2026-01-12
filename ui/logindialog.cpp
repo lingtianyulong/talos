@@ -9,10 +9,11 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
   ui->setupUi(this);
+
+  this->setWindowIcon(QIcon(":/icons/icon.ico"));
 
   // 无边框窗口
   setWindowFlags(Qt::FramelessWindowHint | Qt::Window);

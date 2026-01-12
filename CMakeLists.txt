@@ -17,14 +17,45 @@ foreach(CONFIG_TYPE Debug Release)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${CONFIG_TYPE_UPPER} "${CMAKE_SOURCE_DIR}/build/${CONFIG_TYPE}")
 endforeach()
 
+set(RUST_LIBS_ROOT "${CMAKE_SOURCE_DIR}/rust_libs")
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(QT_QPA_PLATFORM_PLUGIN_PATH "D:/Qt/6.8.3/msvc2022_64/plugins/platforms")
-
-
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Quick QuickWidgets QuickControls2)
+
+# 获取 git 版本
+find_package(Git QUIET) 
+if(GIT_FOUND)
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+else()
+    set(GIT_VERSION "unknown")
+    message(STATUS "Git not found")
+endif()
+
+string(REPLACE "\"" "\\\"" GIT_VERSION_ESCAPED "${GIT_VERSION}")
+add_compile_definitions(GIT_VERSION=\"${GIT_VERSION_ESCAPED}\")
+message(STATUS "Git commit hash: ${GIT_VERSION}")
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/version.h.in
+    ${CMAKE_BINARY_DIR}/version.h
+    @ONLY
+)
+
+include_directories(${CMAKE_BINARY_DIR})
+
+if (WIN32)
+    set(APP_RC ${CMAKE_SOURCE_DIR}/version.rc)
+endif()
+
+
 
 qt_standard_project_setup()
 
@@ -35,6 +66,7 @@ qt_add_executable(talos
     mainwindow.h
     mainwindow.ui
     resources/resource.qrc
+    ${APP_RC}
 )
 
 add_subdirectory(utils)
@@ -66,3 +98,13 @@ qt_generate_deploy_app_script(
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
 install(SCRIPT ${deploy_script})
+
+add_custom_command(TARGET talos POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_SOURCE_DIR}/build/$<CONFIG>"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${RUST_LIBS_ROOT}/$<IF:$<CONFIG:Debug>,debug,$<IF:$<CONFIG:Release>,release,release>>"
+        "${CMAKE_SOURCE_DIR}/build/$<CONFIG>"
+    COMMENT "copy rust_libs to build/$<CONFIG>"
+)
+
+

@@ -10,4 +10,7 @@
   <qresource prefix="/font">
     <file alias="iconfont.ttf">iconfont/iconfont.ttf</file>
   </qresource>
+  <qresource prefix="/icons">
+    <file alias="icon.ico">icons/icon.ico</file>
+  </qresource>
 </RCC>

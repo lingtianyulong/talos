@@ -11,6 +11,8 @@ int main(int argc, char *argv[]) {
 
   QApplication a(argc, argv);
 
+  auto version = QString::fromUtf8(GIT_VERSION);
+
   auto dlg = new LoginDialog();
   if (dlg->exec() != QDialog::Accepted) {
     return 0;
