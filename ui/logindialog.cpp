@@ -1,6 +1,16 @@
 #include "logindialog.h"
+#include "config/url_config/api_config.h"
+#include "controls/messagebox/messagebox.h"
+#include "logger/logger.h"
+#include "models/user.h"
 #include "registerdialog.h"
 #include "ui_logindialog.h"
+#include "utils/net_helper.h"
+#include "utils/secure_store_helper.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+#include <QMessageBox>
 #include <QMetaObject>
 #include <QPointer>
 #include <QQmlContext>
@@ -10,6 +20,10 @@
 #include <QScopedValueRollback>
 #include <QUrl>
 #include <QVBoxLayout>
+
+using namespace talos;
+using namespace controls;
+using namespace controls::messagebox;
 
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
@@ -34,14 +48,6 @@ LoginDialog::LoginDialog(QWidget *parent)
   if (_quick->rootObject()) {
     _quick->rootObject()->setProperty("backend", QVariant::fromValue(this));
   }
-
-  // connectQmlSignals();
-  // connect(_quick, &QQuickWidget::statusChanged, this,
-  //         [this](QQuickWidget::Status status) {
-  //           if (status == QQuickWidget::Ready) {
-  //             connectQmlSignals();
-  //           }
-  //         });
 
   // 布局
   QPointer layout = new QVBoxLayout(this);
@@ -79,8 +85,47 @@ void LoginDialog::handleClosed() {
 
 void LoginDialog::handleLogin(const QString &username,
                               const QString &password) {
-  _username = username;
-  _password = password;
+
+  if (username.isEmpty() || password.isEmpty()) {
+    QMessageBox::warning(this, "Warning",
+                         "用户名或密码为空, 请选输入用户名或密码!");
+    reject();
+  }
+
+  auto pwd = password.toStdString();
+  models::User user(username.toStdString(), pwd);
+
+  std::string login_url = std::format("{}{}", url::BASE_URL, url::LOGIN);
+  auto resp = utils::http_post(login_url.c_str(), user.to_json().c_str(), "");
+  if (!resp) {
+    accept();
+    return;
+  }
+
+  QString response(resp);
+  utils::free_http_response(resp);
+
+  QJsonParseError error;
+  QJsonDocument doc = QJsonDocument::fromJson(response.toUtf8(), &error);
+  if (error.error != QJsonParseError::NoError) {
+    QString errorString = QString("Json parse error: %1").arg(error.error);
+    Logger::Error(errorString.toStdString());
+    reject();
+  }
+
+  auto obj = doc.object();
+  if (obj.contains("success") && obj["success"].toBool() == true) {
+    auto token = obj["token"].toString();
+    if (!token.isEmpty()) {
+      if (utils::secure_store_set("talos", "access_token",
+                                  token.toUtf8().constData()) != 0) {
+        Logger::Error("Store token failed.");
+      }
+    }
+  } else {
+    auto msg = obj["message"].toString();
+    MessageBox::warning(msg, this);
+  }
   accept();
 }
 
