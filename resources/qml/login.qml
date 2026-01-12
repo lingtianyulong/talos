@@ -38,7 +38,7 @@ Item {
 
     Rectangle {
         id: title
-        height: 30
+        height: 40
         width: parent.width
         color: "transparent"
 
@@ -206,7 +206,7 @@ Item {
 
             Label {
                 text: "|"
-                font.pixelSize: 14
+                font.pixelSize: 16
                 color: "#cccccc"
             }
 
