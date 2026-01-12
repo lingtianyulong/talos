@@ -11,7 +11,6 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
   ui->setupUi(this);
@@ -99,9 +98,4 @@ QString LoginDialog::username() const { return _username; }
 
 QString LoginDialog::password() const { return _password; }
 
-void LoginDialog::startDrag(const QPoint &pos) { _dragOffset = pos; }
-
-void LoginDialog::dragWindow(const QPoint &pos) {
-  Q_UNUSED(pos);
-  move(QCursor::pos() - _dragOffset);
-}
+void LoginDialog::moveWindow() { this->windowHandle()->startSystemMove(); }

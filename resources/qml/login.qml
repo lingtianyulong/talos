@@ -48,15 +48,7 @@ Item {
             hoverEnabled: true
             onPressed: mouse => {
                 if (root.backend) {
-                    root.backend.startDrag(Qt.point(mouse.x, mouse.y));
-                }
-            }
-
-            onPositionChanged: mouse => {
-                if (pressed) {
-                    if (root.backend) {
-                        root.backend.dragWindow(Qt.point(mouse.x, mouse.y));
-                    }
+                    root.backend.moveWindow();
                 }
             }
         }

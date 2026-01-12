@@ -19,12 +19,11 @@ public:
   QString password() const;
 
 public slots:
-  void startDrag(const QPoint &pos);
-  void dragWindow(const QPoint &pos);
   void handleClosed();
   void handleLogin(const QString &username, const QString &password);
   void handleRegister();
   void handleForgetPassword();
+  void moveWindow();
 
 protected:
   void showEvent(QShowEvent *event) override;
