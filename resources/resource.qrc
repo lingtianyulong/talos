@@ -13,4 +13,9 @@
   <qresource prefix="/icons">
     <file alias="icon.ico">icons/icon.ico</file>
   </qresource>
+  <qresource prefix="theme">
+    <file alias="checkbox.qss">theme/checkbox.qss</file>
+    <file alias="buttons.qss">theme/buttons.qss</file>
+    <file alias="menubar.qss">theme/menubar.qss</file>
+  </qresource>
 </RCC>

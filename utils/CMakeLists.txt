@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.10)
 
 # 设置项目名称和版本
 project(Utils VERSION 1.0)
@@ -10,8 +10,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 设置库名称
 set(LIBRARY_NAME utils)
 
-file(GLOB SOURCES *.cpp *.h)
+# 设置源文件
+set(SOURCES
+        font_helper.cpp
+)
 
+# 设置头文件
+set(HEADERS
+        font_helper.h
+        dump_helper.h
+        net_helper.h
+)
 
 # 查找 Qt 包
 find_package(Qt6 COMPONENTS
@@ -23,6 +32,7 @@ find_package(Qt6 COMPONENTS
 # 创建静态库
 add_library(${LIBRARY_NAME} STATIC
         ${SOURCES}
+        ${HEADERS}
 )
 
 # 设置库属性，确保输出到正确位置
@@ -40,11 +50,11 @@ target_include_directories(${LIBRARY_NAME}
         ${CMAKE_SOURCE_DIR}
 )
 
-# if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-#     set(LIBDUMP_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/libdump.lib")
-#     set(SECURE_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/secure_store.lib")
-#     set(NET_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/netlib.lib")
-# endif ()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(LIBDUMP_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/libdump.lib")
+    set(SECURE_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/secure_store.lib")
+    set(NET_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/netlib.lib")
+endif ()
 
 
 # 链接依赖库
@@ -53,10 +63,9 @@ target_link_libraries(${LIBRARY_NAME}
         Qt::Core
         Qt::Gui
         PRIVATE
-        # third_library
-        # ${LIBDUMP_PATH}
-        # ${SECURE_LIB_PATH}
-        # ${NET_LIB_PATH}
+        ${LIBDUMP_PATH}
+        ${SECURE_LIB_PATH}
+        ${NET_LIB_PATH}
 )
 
 # 如果是 MSVC 编译器，设置特定选项

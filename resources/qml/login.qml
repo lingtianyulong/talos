@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Effects
+import QtQuick.Layouts
 import "./components"
 
 Item {
@@ -9,6 +10,9 @@ Item {
     height: 480
     signal closeRequested
     signal loginRequested(string username, string password)
+
+    // 声明由 C++ 注入的后端对象
+    property var backend: null
 
     FontLoader {
         id: iconFont
@@ -30,6 +34,32 @@ Item {
             GradientStop {
                 position: 1.0
                 color: "#7B5CB8"
+            }
+        }
+    }
+
+    Rectangle {
+        id: title
+        height: 30
+        width: parent.width
+        color: "transparent"
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+            hoverEnabled: true
+            onPressed: mouse => {
+                if (root.backend) {
+                    root.backend.startDrag(Qt.point(mouse.x, mouse.y));
+                }
+            }
+
+            onPositionChanged: mouse => {
+                if (pressed) {
+                    if (root.backend) {
+                        root.backend.dragWindow(Qt.point(mouse.x, mouse.y));
+                    }
+                }
             }
         }
     }
@@ -106,13 +136,12 @@ Item {
                 id: passwordField
                 _width: parent.width
             }
-
             Button {
                 id: loginButton
                 width: 180
-                height: 50
+                height: 40
                 text: "登录"
-                font.pixelSize: 20
+                font.pixelSize: 16
                 anchors.horizontalCenter: parent.horizontalCenter
                 hoverEnabled: true
 
@@ -139,6 +168,55 @@ Item {
                     }
                     radius: 5
                     border.width: 0
+                }
+            }
+        }
+
+        // 底部注册/忘记密码区域
+        RowLayout {
+            id: footerArea
+            spacing: 10
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Button {
+                id: registerButton
+                background: null
+                font.pixelSize: 14
+                padding: 0
+                HoverHandler {
+                    cursorShape: Qt.PointingHandCursor
+                }
+                contentItem: Label {
+                    text: "注册用户"
+                    font: registerButton.font
+                    color: "#409eff"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            Label {
+                text: "|"
+                font.pixelSize: 14
+                color: "#cccccc"
+            }
+
+            Button {
+                id: forgetPasswordButton
+                background: null
+                font.pixelSize: 14
+                padding: 0
+                HoverHandler {
+                    cursorShape: Qt.PointingHandCursor
+                }
+                contentItem: Label {
+                    text: "忘记密码"
+                    font: forgetPasswordButton.font
+                    color: "#409eff"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
             }
         }

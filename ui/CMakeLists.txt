@@ -8,11 +8,20 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Quick QuickWidgets)
 
-file(GLOB SOURCES *.cpp *.h *.ui)
+file(GLOB SOURCES  *.h *.cpp *.ui)
 
 add_library(ui STATIC ${SOURCES})
 
 target_link_libraries(ui
+    PUBLIC
+        controls
+        talos_logger
+        config
+        utils
+        encrypt
+        dblib
+        talos_models
+        capture
     PRIVATE
         Qt::Core
         Qt::Widgets

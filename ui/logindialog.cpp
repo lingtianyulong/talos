@@ -2,6 +2,7 @@
 #include "ui_logindialog.h"
 #include <QMetaObject>
 #include <QPointer>
+#include <QQmlContext>
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <QQuickWidget>
@@ -29,6 +30,10 @@ LoginDialog::LoginDialog(QWidget *parent)
   _quick->setResizeMode(QQuickWidget::SizeRootObjectToView);
   _quick->setClearColor(Qt::transparent);
   _quick->setSource(QUrl("qrc:/qml/login.qml"));
+  if (_quick->rootObject()) {
+    _quick->rootObject()->setProperty("backend", QVariant::fromValue(this));
+  }
+
   connectQmlSignals();
   connect(_quick, &QQuickWidget::statusChanged, this,
           [this](QQuickWidget::Status status) {
@@ -88,8 +93,16 @@ void LoginDialog::handleLoginRequested(const QString &username,
                                        const QString &password) {
   _username = username;
   _password = password;
+  accept();
 }
 
 QString LoginDialog::username() const { return _username; }
 
 QString LoginDialog::password() const { return _password; }
+
+void LoginDialog::startDrag(const QPoint &pos) { _dragOffset = pos; }
+
+void LoginDialog::dragWindow(const QPoint &pos) {
+  Q_UNUSED(pos);
+  move(QCursor::pos() - _dragOffset);
+}

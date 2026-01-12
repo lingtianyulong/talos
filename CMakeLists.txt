@@ -69,14 +69,28 @@ qt_add_executable(talos
     ${APP_RC}
 )
 
-add_subdirectory(utils)
-add_subdirectory(ui)
+add_subdirectory(logger)         # 然后是 logger
+add_subdirectory(config)         # 添加 config 目录
+add_subdirectory(utils)          # 添加 utils 目录
+add_subdirectory(controls)       # 添加 controls 目录
+add_subdirectory(models)         # 添加 models 目录
+add_subdirectory(db)             # 添加 db 目录
+add_subdirectory(encrypt)
+add_subdirectory(capture)
+add_subdirectory(ui)             # 最后是 ui
 
 
 target_link_libraries(talos
     PRIVATE
         utils
+        config
         ui
+        controls
+        capture
+        encrypt
+        dblib
+        talos_models
+        talos_logger
         Qt::Core
         Qt::Widgets
         Qt::Quick

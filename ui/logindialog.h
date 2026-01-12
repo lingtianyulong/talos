@@ -18,6 +18,10 @@ public:
   QString username() const;
   QString password() const;
 
+public slots:
+  void startDrag(const QPoint &pos);
+  void dragWindow(const QPoint &pos);
+
 protected:
   void showEvent(QShowEvent *event) override;
   void closeEvent(QCloseEvent *event) override;
@@ -35,6 +39,7 @@ private:
   bool _closingFromQml = false;
   QString _username;
   QString _password;
+  QPoint _dragOffset;
 };
 
 #endif // LOGINDIALOG_H
