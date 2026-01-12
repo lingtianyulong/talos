@@ -21,17 +21,14 @@ public:
 public slots:
   void startDrag(const QPoint &pos);
   void dragWindow(const QPoint &pos);
+  void handleClosed();
+  void handleLogin(const QString &username, const QString &password);
+  void handleRegister();
+  void handleForgetPassword();
 
 protected:
   void showEvent(QShowEvent *event) override;
   void closeEvent(QCloseEvent *event) override;
-
-private:
-  void connectQmlSignals();
-
-private slots:
-  void handleCloseRequested();
-  void handleLoginRequested(const QString &username, const QString &password);
 
 private:
   Ui::LoginDialog *ui;

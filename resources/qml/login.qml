@@ -8,8 +8,6 @@ Item {
     id: root
     width: 520
     height: 480
-    signal closeRequested
-    signal loginRequested(string username, string password)
 
     // 声明由 C++ 注入的后端对象
     property var backend: null
@@ -154,7 +152,11 @@ Item {
                     elide: Text.ElideRight
                 }
 
-                onClicked: root.loginRequested(usernameField._text, passwordField._text)
+                onClicked: {
+                    if (root.backend) {
+                        root.backend.handleLogin(usernameField._text, passwordField._text);
+                    }
+                }
 
                 background: Rectangle {
                     color: {
@@ -195,6 +197,11 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
+                onClicked: {
+                    if (root.backend) {
+                        root.backend.handleRegister();
+                    }
+                }
             }
 
             Label {
@@ -217,6 +224,11 @@ Item {
                     color: "#409eff"
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                }
+                onClicked: {
+                    if (root.backend) {
+                        root.backend.handleForgetPassword();
+                    }
                 }
             }
         }
@@ -250,6 +262,10 @@ Item {
         to: 0
         duration: 300
         easing.type: Easing.InCubic
-        onStopped: root.closeRequested()
+        onStopped: {
+            if (root.backend) {
+                root.backend.handleClosed();
+            }
+        }
     }
 }

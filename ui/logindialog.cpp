@@ -1,4 +1,5 @@
 #include "logindialog.h"
+#include "registerdialog.h"
 #include "ui_logindialog.h"
 #include <QMetaObject>
 #include <QPointer>
@@ -9,6 +10,7 @@
 #include <QScopedValueRollback>
 #include <QUrl>
 #include <QVBoxLayout>
+
 
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
@@ -34,13 +36,13 @@ LoginDialog::LoginDialog(QWidget *parent)
     _quick->rootObject()->setProperty("backend", QVariant::fromValue(this));
   }
 
-  connectQmlSignals();
-  connect(_quick, &QQuickWidget::statusChanged, this,
-          [this](QQuickWidget::Status status) {
-            if (status == QQuickWidget::Ready) {
-              connectQmlSignals();
-            }
-          });
+  // connectQmlSignals();
+  // connect(_quick, &QQuickWidget::statusChanged, this,
+  //         [this](QQuickWidget::Status status) {
+  //           if (status == QQuickWidget::Ready) {
+  //             connectQmlSignals();
+  //           }
+  //         });
 
   // 布局
   QPointer layout = new QVBoxLayout(this);
@@ -68,20 +70,7 @@ void LoginDialog::closeEvent(QCloseEvent *event) {
   }
 }
 
-void LoginDialog::connectQmlSignals() {
-  if (!_quick) {
-    return;
-  }
-  if (auto *obj = _quick->rootObject()) {
-    QObject::connect(obj, SIGNAL(closeRequested()), this,
-                     SLOT(handleCloseRequested()), Qt::UniqueConnection);
-    QObject::connect(obj, SIGNAL(loginRequested(QString, QString)), this,
-                     SLOT(handleLoginRequested(QString, QString)),
-                     Qt::UniqueConnection);
-  }
-}
-
-void LoginDialog::handleCloseRequested() {
+void LoginDialog::handleClosed() {
   if (_closingFromQml) {
     return;
   }
@@ -89,11 +78,21 @@ void LoginDialog::handleCloseRequested() {
   close();
 }
 
-void LoginDialog::handleLoginRequested(const QString &username,
-                                       const QString &password) {
+void LoginDialog::handleLogin(const QString &username,
+                              const QString &password) {
   _username = username;
   _password = password;
   accept();
+}
+
+void LoginDialog::handleRegister() {
+  RegisterDialog registerDialog(this, 0);
+  registerDialog.exec();
+}
+
+void LoginDialog::handleForgetPassword() {
+  RegisterDialog registerDialog(this, 1);
+  registerDialog.exec();
 }
 
 QString LoginDialog::username() const { return _username; }
