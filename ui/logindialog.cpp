@@ -139,8 +139,4 @@ void LoginDialog::handleForgetPassword() {
   registerDialog.exec();
 }
 
-QString LoginDialog::username() const { return _username; }
-
-QString LoginDialog::password() const { return _password; }
-
 void LoginDialog::moveWindow() { this->windowHandle()->startSystemMove(); }
