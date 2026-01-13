@@ -1,5 +1,3 @@
-#include "mainwindow.h"
-
 #include "logger/logger.h"
 #include "ui/logindialog.h"
 #include "ui/mainwidget.h"
@@ -9,7 +7,6 @@
 #include <QObject>
 #include <QtQuickControls2/QQuickStyle>
 #include <QtQuickControls2/QtQuickControls2>
-
 
 using namespace talos;
 

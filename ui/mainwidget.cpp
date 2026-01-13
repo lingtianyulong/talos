@@ -12,12 +12,16 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QImageReader>
+#include <QLinearGradient>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMouseEvent>
+#include <QPainterPath>
 #include <QPushButton>
 #include <QScreen>
 #include <QTimer>
+#include <QWindow>
 
 #include "../logger/logger.h"
 #include "../utils/font_helper.h"
@@ -32,21 +36,50 @@ MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::MainWidget) {
   ui->setupUi(this);
 
+  setWindowIcon(QIcon(":/icons/icon.ico"));
+  setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+  setAttribute(Qt::WA_TranslucentBackground);
+  setFixedSize(1024, 768);
+
   initUI();
   initTitle();
-
-  //   this->setWindowIcon(QIcon(":/icons/icon.ico"));
-  //   this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
-
-  // initMenu();
-
-  // _view = new ImageViewer(this);
-
-  // _mainLayout->addWidget(_view);
-  // setLayout(_mainLayout);
 }
 
 MainWidget::~MainWidget() { delete ui; }
+
+void MainWidget::mousePressEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton) {
+
+    QPoint pos = event->globalPosition().toPoint();
+    // 将窗口可拖动区域设置在标题栏区域
+    QRect rect;
+    rect.setTopLeft(this->geometry().topLeft());
+    rect.setBottomRight(
+        QPoint(this->geometry().right(), this->geometry().top() + 40));
+    if (rect.contains(pos)) {
+      this->windowHandle()->startSystemMove();
+    }
+  }
+
+  QWidget::mousePressEvent(event);
+}
+
+void MainWidget::mouseMoveEvent(QMouseEvent *event) {
+
+  QWidget::mouseMoveEvent(event);
+}
+
+void MainWidget::paintEvent(QPaintEvent *event) {
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+
+  QRect rect = this->rect();
+  rect.adjust(1, 1, -1, -1);
+
+  QPainterPath path;
+  path.addRoundedRect(rect, 12, 12);
+  painter.fillPath(path, QBrush(QColor(106, 122, 239, 255)));
+}
 
 /**
  * @brief 创建 title 栏的按钮
@@ -155,10 +188,10 @@ void MainWidget::initTitle() {
     _mainLayout = new QVBoxLayout(this);
   }
   if (_titleLayout == nullptr) {
-    _titleLayout = new QHBoxLayout(); // 移除 this 以避免顶层布局冲突
+    _titleLayout = new QHBoxLayout(this); // 移除 this 以避免顶层布局冲突
   }
 
-  _titleLayout->setSpacing(5);
+  _titleLayout->setSpacing(0);
   _titleLayout->setContentsMargins(0, 0, 0, 0);
   _titleLayout->setAlignment(Qt::AlignRight | Qt::AlignTop);
 

@@ -33,7 +33,9 @@ public:
   void onStopCapture();
 
 protected:
-  // void paintEvent(QPaintEvent *event) override;
+  void paintEvent(QPaintEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
 
 private:
   void initUI();
