@@ -32,6 +32,9 @@ public:
 
   void onStopCapture();
 
+protected:
+  // void paintEvent(QPaintEvent *event) override;
+
 private:
   void initUI();
 
@@ -44,6 +47,8 @@ private:
   Ui::MainWidget *ui;
 
   QPointer<QVBoxLayout> _mainLayout = nullptr;
+  QPointer<QHBoxLayout> _titleLayout = nullptr;
+
   QFont _iconfont;
 
   QPointer<controls::image_viewer::ImageViewer> _view = nullptr;

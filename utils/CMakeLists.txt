@@ -50,12 +50,9 @@ target_include_directories(${LIBRARY_NAME}
         ${CMAKE_SOURCE_DIR}
 )
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(LIBDUMP_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/libdump.lib")
-    set(SECURE_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/secure_store.lib")
-    set(NET_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/netlib.lib")
-endif ()
-
+set(LIBDUMP_PATH "${CMAKE_SOURCE_DIR}/rust_libs/$<IF:$<CONFIG:Debug>,debug,$<IF:$<CONFIG:Release>,release,release>>/libdump.lib")
+set(SECURE_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/$<IF:$<CONFIG:Debug>,debug,$<IF:$<CONFIG:Release>,release,release>>/secure_store.lib")
+set(NET_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/$<IF:$<CONFIG:Debug>,debug,$<IF:$<CONFIG:Release>,release,release>>/netlib.lib")
 
 # 链接依赖库
 target_link_libraries(${LIBRARY_NAME}
