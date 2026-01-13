@@ -27,9 +27,11 @@
 #include "../utils/font_helper.h"
 #include "capture/rust/capture_rust.h"
 #include "controls/buttons/default_button.h"
+#include "controls/messagebox/messagebox.h"
 
 using namespace controls::buttons;
 using namespace controls::image_viewer;
+using namespace controls::messagebox;
 using namespace talos::screen_capture;
 
 MainWidget::MainWidget(QWidget *parent)
@@ -47,16 +49,20 @@ MainWidget::MainWidget(QWidget *parent)
 
 MainWidget::~MainWidget() { delete ui; }
 
+bool MainWidget::isInTitleArea(const QPoint &pos) const {
+  QRect rect;
+  rect.setTopLeft(this->geometry().topLeft());
+  rect.setBottomRight(
+      QPoint(this->geometry().right(), this->geometry().top() + 30));
+  return rect.contains(pos);
+}
+
 void MainWidget::mousePressEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
 
     QPoint pos = event->globalPosition().toPoint();
     // 将窗口可拖动区域设置在标题栏区域
-    QRect rect;
-    rect.setTopLeft(this->geometry().topLeft());
-    rect.setBottomRight(
-        QPoint(this->geometry().right(), this->geometry().top() + 40));
-    if (rect.contains(pos)) {
+    if (isInTitleArea(pos)) {
       this->windowHandle()->startSystemMove();
     }
   }
@@ -74,7 +80,7 @@ void MainWidget::paintEvent(QPaintEvent *event) {
   painter.setRenderHint(QPainter::Antialiasing);
 
   QRect rect = this->rect();
-  rect.adjust(1, 1, -1, -1);
+  rect.adjust(0, 0, 0, 0);
 
   QPainterPath path;
   path.addRoundedRect(rect, 12, 12);
@@ -87,10 +93,23 @@ void MainWidget::paintEvent(QPaintEvent *event) {
  * @return 返回 QPushbutton 若创建失败,则返回 nullptr
  */
 QPushButton *MainWidget::createTitleButton(const QString &title) {
-  auto button = new QPushButton(this);
-  button->setFont(_iconfont);
-  button->setText(title);
-  return button;
+  QPointer btn = new QPushButton(this);
+  btn->setFont(_iconfont);
+  btn->setText(title);
+  btn->setFixedSize(40, 30);
+  btn->setStyleSheet("QPushButton {"
+                     "background-color: transparent;"
+                     "color: snow;"
+                     "font-size: 12px;"
+                     "border: none;"
+                     "}"
+                     "QPushButton:hover {"
+                     "background-color: rgb(126, 142, 255);"
+                     "}"
+                     "QPushButton:pressed {"
+                     "background-color: rgb(96, 112, 239);"
+                     "}");
+  return btn;
 }
 
 void MainWidget::initMenu() {
@@ -184,9 +203,7 @@ void MainWidget::onStopCapture() {
 }
 
 void MainWidget::initTitle() {
-  if (_mainLayout == nullptr) {
-    _mainLayout = new QVBoxLayout(this);
-  }
+
   if (_titleLayout == nullptr) {
     _titleLayout = new QHBoxLayout(this); // 移除 this 以避免顶层布局冲突
   }
@@ -195,93 +212,30 @@ void MainWidget::initTitle() {
   _titleLayout->setContentsMargins(0, 0, 0, 0);
   _titleLayout->setAlignment(Qt::AlignRight | Qt::AlignTop);
 
-  // auto width = _titleLayout->width();
-  // auto height = _titleLayout->height();
-
   auto min_btn = createTitleButton(QString::fromUtf8("\ue67a"));
-  min_btn->setStyleSheet("QPushButton {"
-                         "background-color: transparent;"
-                         "color: snow;"
-                         "max-width: 30px;"
-                         "max-height: 30px;"
-                         "}"
-                         "QPushButton:hover {"
-                         "background-color: rgb(211, 211, 211);"
-                         "}");
-
-  connect(min_btn, &QPushButton::clicked, this, [&]() {
-    if (auto win = window()) {
-      win->showMinimized();
-    }
-    // this->showMinimized();
-    // if (auto parent = qobject_cast<QMainWindow *>(this->parent())) {
-    //   parent->showMinimized();
-    // }
-  });
-
-  _titleLayout->addWidget(min_btn);
-
   auto max_btn = createTitleButton(QString::fromUtf8("\ue653"));
-  max_btn->setStyleSheet("QPushButton {"
-                         "background-color: transparent;"
-                         "color: snow;"
-                         "max-width: 30px;"
-                         "max-height: 30px;"
-                         "}"
-                         "QPushButton:hover {"
-                         "background-color: rgb(211, 211, 211);"
-                         "}");
-
-  connect(max_btn, &QPushButton::clicked, [=]() {
-    QWidget *win = window();
-    if (!win)
-      return;
-
-    // 鲁棒性判定逻辑：同时检查标志位和几何尺寸
-    bool isMax =
-        win->isMaximized() || (win->windowState() & Qt::WindowMaximized);
-    if (!isMax && win->screen()) {
-      if (win->geometry() == win->screen()->availableGeometry()) {
-        isMax = true;
-      }
-    }
-
-    if (isMax) {
-      // 核心修复：手动清除标志位，强制刷新 OS 层面的还原指令
-      win->setWindowState(win->windowState() & ~Qt::WindowMaximized);
-      win->showNormal();
-    } else {
-      win->showMaximized();
-    }
-  });
-
+  _titleLayout->addWidget(min_btn);
   _titleLayout->addWidget(max_btn);
 
   auto close_btn = createTitleButton(QString::fromUtf8("\ue624"));
   close_btn->setStyleSheet("QPushButton {"
                            "background-color: transparent;"
                            "color: snow;"
-                           "max-width: 30px;"
-                           "max-height: 30px;"
+                           "font-size: 12px;"
+                           "border: none;"
+                           "border-top-right-radius: 12px;"
                            "}"
                            "QPushButton:hover {"
                            "background-color: red;"
+                           "border-top-right-radius: 12px;"
                            "}");
-
   _titleLayout->addWidget(close_btn);
 
-  _titleLayout->setAlignment(Qt::AlignRight | Qt::AlignTop);
-
-  connect(close_btn, &QPushButton::clicked, [&]() {
-    this->close();
-    if (auto parent = qobject_cast<QMainWindow *>(this->parent())) {
-      parent->close();
-    }
-  });
+  connect(close_btn, &QPushButton::clicked, this, &MainWidget::closeClicked);
+  connect(min_btn, &QPushButton::clicked, this, &MainWidget::minClicked);
+  connect(max_btn, &QPushButton::clicked, this, &MainWidget::maxClicked);
 
   _mainLayout->addLayout(_titleLayout);
-
-  // _mainLayout->addLayout(layout);
 }
 
 void MainWidget::initUI() {
@@ -292,13 +246,40 @@ void MainWidget::initUI() {
     fontFamily = utils::FontHelper::getDefaultFallbackFont();
   }
 
-  _iconfont = QFont(fontFamily, 16);
+  _iconfont = QFont(fontFamily, 14);
 
-  // initMenu();
+  if (_mainLayout == nullptr) {
+    _mainLayout = new QVBoxLayout(this);
+    _mainLayout->setContentsMargins(0, 0, 0, 0);
+    _mainLayout->setSpacing(0);
+  }
 
   this->setLayout(_mainLayout);
-
-  // initTitle();
-  // _mainLayout->setAlignment(Qt::AlignTop);
-  // this->setLayout(_mainLayout);
 }
+
+void MainWidget::closeClicked() {
+  auto ret = MessageBox::warning("确定要退出程序吗?", this);
+  if (ret == MessageBox::StandardButton::Ok) {
+    this->close();
+  }
+}
+
+/**
+ * @brief 最大化/正常化窗口, 并保存正常状态下的几何矩形
+ * @note 如果窗口已经最大化, 则恢复到正常状态, 并保存正常状态下的几何矩形
+ *       如果窗口不是最大化, 则最大化窗口, 并保存当前窗口的几何矩形
+ *       由自己维护状态, 避免窗口状态丢失
+ */
+void MainWidget::maxClicked() {
+  if (_isMaximized) {
+    this->showNormal();
+    _isMaximized = false;
+    this->setGeometry(_normalGeometry);
+  } else {
+    this->showMaximized();
+    _isMaximized = true;
+    _normalGeometry = this->geometry();
+  }
+}
+
+void MainWidget::minClicked() { this->showMinimized(); }

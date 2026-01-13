@@ -39,10 +39,13 @@ protected:
 
 private:
   void initUI();
-
   void initTitle();
-
   void initMenu();
+  bool isInTitleArea(const QPoint &pos) const;
+
+  void closeClicked();
+  void maxClicked();
+  void minClicked();
 
   QPushButton *createTitleButton(const QString &title);
 
@@ -58,6 +61,8 @@ private:
   QPointer<QTimer> _timer = new QTimer(this);
 
   bool _captureInited = false; //!< 是否已经初始化抓屏模块
+  bool _isMaximized = false;   //!< 是否最大化
+  QRect _normalGeometry;       //!< 正常状态下的几何矩形
 };
 
 #endif // MAINWIDGET_H
