@@ -62,9 +62,6 @@ qt_standard_project_setup()
 qt_add_executable(talos
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
     resources/resource.qrc
     ${APP_RC}
 )
