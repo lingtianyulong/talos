@@ -12,6 +12,7 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QImageReader>
+#include <QLabel>
 #include <QLinearGradient>
 #include <QMainWindow>
 #include <QMenu>
@@ -209,8 +210,30 @@ void MainWidget::initTitle() {
   }
 
   _titleLayout->setSpacing(0);
-  _titleLayout->setContentsMargins(0, 0, 0, 0);
-  _titleLayout->setAlignment(Qt::AlignRight | Qt::AlignTop);
+  _titleLayout->setContentsMargins(10, 0, 0, 0); // 左边缩进 10px
+  _titleLayout->setAlignment(Qt::AlignTop | Qt::AlignVCenter);
+
+  // icon 图像
+  auto iconLabel = new QLabel(this);
+  iconLabel->setFixedSize(16, 16);
+  iconLabel->setScaledContents(true);
+  iconLabel->setPixmap(windowIcon().pixmap(16, 16));
+  iconLabel->setAlignment(Qt::AlignVCenter);
+  _titleLayout->addWidget(iconLabel); // 正确添加到布局左侧
+
+  _titleLayout->addSpacing(5);
+
+  auto titleLabel = new QLabel(this);
+  titleLabel->setText("Talos");
+  titleLabel->setFixedSize(100, 30);
+  titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+  titleLabel->setStyleSheet("QLabel {"
+                            "color: snow;"
+                            "font-size: 14px;"
+                            "}");
+  _titleLayout->addWidget(titleLabel);
+
+  _titleLayout->addStretch();
 
   auto min_btn = createTitleButton(QString::fromUtf8("\ue67a"));
   auto max_btn = createTitleButton(QString::fromUtf8("\ue653"));

@@ -18,4 +18,7 @@
     <file alias="buttons.qss">theme/buttons.qss</file>
     <file alias="menubar.qss">theme/menubar.qss</file>
   </qresource>
+  <qresource prefix="/avatar">
+    <file alias="avatar.png">avatar/avatar.png</file>
+  </qresource>
 </RCC>
