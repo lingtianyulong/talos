@@ -44,6 +44,9 @@ MainWidget::MainWidget(QWidget *parent)
   setAttribute(Qt::WA_TranslucentBackground);
   setFixedSize(1024, 768);
 
+  // 初始化默认几何尺寸
+  _normalGeometry = QRect(0, 0, 1024, 768);
+
   initUI();
   initTitle();
 }
@@ -60,20 +63,48 @@ bool MainWidget::isInTitleArea(const QPoint &pos) const {
 
 void MainWidget::mousePressEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
-
     QPoint pos = event->globalPosition().toPoint();
-    // 将窗口可拖动区域设置在标题栏区域
     if (isInTitleArea(pos)) {
-      this->windowHandle()->startSystemMove();
+      _isDragging = true;
+      _pressPos = event->pos(); // 记录本地点击位置
     }
   }
-
   QWidget::mousePressEvent(event);
 }
 
 void MainWidget::mouseMoveEvent(QMouseEvent *event) {
+  if (_isDragging && (event->buttons() & Qt::LeftButton)) {
+    if (_isMaximized) {
+      // 1. 计算点击位置在当前宽度中的比例，以便还原后窗口能准确“粘”在鼠标上
+      qreal ratio = (qreal)_pressPos.x() / width();
 
+      // 2. 执行还原
+      showNormal();
+      _isMaximized = false;
+
+      // 3. 根据比例计算还原后的新位置
+      int newX = event->globalPosition().toPoint().x() -
+                 (_normalGeometry.width() * ratio);
+      int newY = event->globalPosition().toPoint().y() - _pressPos.y();
+
+      // 4. 瞬间移动到新位置，实现无缝衔接
+      this->move(newX, newY);
+    }
+
+    // 5. 调用系统底层拖动，支持靠边缩放等原生特性
+    if (this->windowHandle()) {
+      this->windowHandle()->startSystemMove();
+    }
+    _isDragging = false; // 交给系统后，清除自己的标记
+  }
   QWidget::mouseMoveEvent(event);
+}
+
+void MainWidget::mouseReleaseEvent(QMouseEvent *event) {
+  if (_isDragging && event->button() == Qt::LeftButton) {
+    _isDragging = false;
+  }
+  QWidget::mouseReleaseEvent(event);
 }
 
 void MainWidget::paintEvent(QPaintEvent *event) {
@@ -299,9 +330,9 @@ void MainWidget::maxClicked() {
     _isMaximized = false;
     this->setGeometry(_normalGeometry);
   } else {
+    _normalGeometry = this->geometry();
     this->showMaximized();
     _isMaximized = true;
-    _normalGeometry = this->geometry();
   }
 }
 

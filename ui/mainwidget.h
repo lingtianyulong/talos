@@ -36,6 +36,7 @@ protected:
   void paintEvent(QPaintEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
   void initUI();
@@ -63,6 +64,8 @@ private:
   bool _captureInited = false; //!< 是否已经初始化抓屏模块
   bool _isMaximized = false;   //!< 是否最大化
   QRect _normalGeometry;       //!< 正常状态下的几何矩形
+  bool _isDragging = false;    //!< 是否正在拖拽
+  QPoint _pressPos;            //!< 鼠标按下时的位置
 };
 
 #endif // MAINWIDGET_H
