@@ -107,6 +107,27 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *event) {
   QWidget::mouseReleaseEvent(event);
 }
 
+void MainWidget::mouseDoubleClickEvent(QMouseEvent *event) {
+  QPoint pos = event->globalPosition().toPoint();
+  if (event->button() == Qt::LeftButton && isInTitleArea(pos)) {
+    if (_isMaximized) {
+      this->showNormal();
+      _isMaximized = false;
+      this->setGeometry(_normalGeometry);
+
+      // 恢复后的窗口移动到鼠标附近
+      QPoint newPos = QPoint(pos.x() - width() / 2, 30 / 2);
+      this->move(newPos);
+
+    } else {
+      _normalGeometry = this->geometry();
+      this->showMaximized();
+      _isMaximized = true;
+    }
+  }
+  QWidget::mouseDoubleClickEvent(event);
+}
+
 void MainWidget::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
@@ -326,10 +347,12 @@ void MainWidget::closeClicked() {
  */
 void MainWidget::maxClicked() {
   if (_isMaximized) {
+    // 先恢复正常窗口, 再将 geometry 设置为正常状态下的几何矩形
     this->showNormal();
     _isMaximized = false;
     this->setGeometry(_normalGeometry);
   } else {
+    // 最大化时, 先保存当前窗口的几何矩形, 再最大化窗口
     _normalGeometry = this->geometry();
     this->showMaximized();
     _isMaximized = true;
