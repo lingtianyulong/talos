@@ -220,6 +220,7 @@ void GraphicsView::zoomIn() {
   qreal height = _pixmap.height() * _curRatio;
   _dstRect = QRectF(x, y, width, height);
 }
+
 /**
  * 函数介绍：在当前视图区域范围内,将图像缩小一级
  * 输入参数：viewRect,当前视图区域范围
