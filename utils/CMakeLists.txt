@@ -10,17 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 设置库名称
 set(LIBRARY_NAME utils)
 
-# 设置源文件
-set(SOURCES
-        font_helper.cpp
-)
-
-# 设置头文件
-set(HEADERS
-        font_helper.h
-        dump_helper.h
-        net_helper.h
-)
+file(GLOB SOURCES "*.cpp" "*.h")
 
 # 查找 Qt 包
 find_package(Qt6 COMPONENTS
@@ -32,7 +22,6 @@ find_package(Qt6 COMPONENTS
 # 创建静态库
 add_library(${LIBRARY_NAME} STATIC
         ${SOURCES}
-        ${HEADERS}
 )
 
 # 设置库属性，确保输出到正确位置

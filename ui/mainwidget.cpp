@@ -49,6 +49,9 @@ MainWidget::MainWidget(QWidget *parent)
 
   initUI();
   initTitle();
+
+  _view = new ImageViewer(this);
+  _mainLayout->addWidget(_view);
 }
 
 MainWidget::~MainWidget() { delete ui; }
