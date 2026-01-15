@@ -1,0 +1,10 @@
+[package]
+name = "color_convert_tool"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+base_tool = { path = "../base_tool" }
+
+[lib]
+crate-type = ["cdylib"]
