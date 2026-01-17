@@ -2,7 +2,7 @@ use std::{
     fs,
     io::{self, Write},
     path::PathBuf,
-    process::{exit, Command, Stdio},
+    process::{Command, Stdio, exit},
 };
 
 fn algo_tools_root() -> PathBuf {
@@ -18,7 +18,6 @@ fn target_dir() -> PathBuf {
 }
 
 // 复制文件到目标目录，只复制 .dll 和 .lib 文件
-#[allow(unused)]
 fn copy_to_dst(src_dir: PathBuf, dst_dir: PathBuf) -> io::Result<()> {
     if !src_dir.exists() {
         return Err(io::Error::new(io::ErrorKind::NotFound, "源目录不存在"));
@@ -36,8 +35,16 @@ fn copy_to_dst(src_dir: PathBuf, dst_dir: PathBuf) -> io::Result<()> {
                 if extension == "dll" || extension == "lib" {
                     let file_name = path.file_name().unwrap().to_string_lossy();
                     let dst_path = dst_dir.join(file_name.as_ref());
-                    fs::copy(&path, &dst_path).expect(&format!("复制文件 {} 失败", path.display()));
-                    println!("复制文件 {} 成功", path.display());
+                    fs::copy(&path, &dst_path).expect(&format!(
+                        "copy file {} to {} failed.",
+                        path.display(),
+                        dst_path.display()
+                    ));
+                    println!(
+                        "copy file {} to {} success.",
+                        path.display(),
+                        dst_path.display()
+                    );
                 }
             }
         }
@@ -106,10 +113,19 @@ fn main() {
             exit(status.code().unwrap_or(1));
         }
         println!("build {} success.", project);
-
-        // 修正：cargo 产物默认直接在 target/debug 或 target/release 下，不带项目名子目录
-        let src_dir = target_dir.clone();
-        remame_lib_name(&src_dir).expect("rename lib name failed.");
-        println!("rename lib name in {} success.", src_dir.display());
     }
+
+    // 修正：cargo 产物默认直接在 target/debug 或 target/release 下，不带项目名子目录
+    let src_dir = target_dir.clone();
+    remame_lib_name(&src_dir).expect("rename lib name failed.");
+    println!("rename lib name in {} success.", src_dir.display());
+
+    let mut dst_dir = root.parent().unwrap().join("algo_libs");
+    if is_release {
+        dst_dir = dst_dir.join("release");
+    } else {
+        dst_dir = dst_dir.join("debug");
+    }
+    println!("the dst directory is: {}", dst_dir.display());
+    copy_to_dst(src_dir, dst_dir).expect("copy to dst failed.");
 }
