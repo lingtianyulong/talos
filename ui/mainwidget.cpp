@@ -139,7 +139,7 @@ void MainWidget::paintEvent(QPaintEvent *event) {
   rect.adjust(0, 0, 0, 0);
 
   QPainterPath path;
-  path.addRoundedRect(rect, 12, 12);
+  path.addRoundedRect(rect, 5, 5);
   painter.fillPath(path, QBrush(QColor(106, 122, 239, 255)));
 }
 
@@ -301,11 +301,11 @@ void MainWidget::initTitle() {
                            "color: snow;"
                            "font-size: 12px;"
                            "border: none;"
-                           "border-top-right-radius: 12px;"
+                           "border-top-right-radius: 5px;"
                            "}"
                            "QPushButton:hover {"
                            "background-color: red;"
-                           "border-top-right-radius: 12px;"
+                           "border-top-right-radius: 5px;"
                            "}");
   _titleLayout->addWidget(close_btn);
 

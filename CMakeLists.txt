@@ -72,8 +72,9 @@ add_subdirectory(utils)          # 添加 utils 目录
 add_subdirectory(controls)       # 添加 controls 目录
 add_subdirectory(models)         # 添加 models 目录
 add_subdirectory(db)             # 添加 db 目录
-add_subdirectory(encrypt)
-add_subdirectory(capture)
+add_subdirectory(encrypt)        # 添加 encrypt 目录
+add_subdirectory(capture)        # 添加 capture 目录
+add_subdirectory(algo_plugin)    # 添加 algo_plugin 目录
 add_subdirectory(ui)             # 最后是 ui
 
 
