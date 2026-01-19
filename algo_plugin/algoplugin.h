@@ -1,12 +1,20 @@
 #ifndef ALGOPLUGIN_H
 #define ALGOPLUGIN_H
+#include <string>
+#include "rust_core/algo_base_tool.h"
 
-namespace talos::plugin {
+namespace talos::plugin
+{
+    class PluginManager
+    {
+    public:
+        PluginManager();
+        ~PluginManager();
 
-// class AlgoPlugin {
-// public:
-//   virtual ~AlgoPlugin() = default;
-// };
+        bool LoadAlgoPlugins(const std::string &pluginDir);
+
+    private:
+    };
 
 } // namespace talos::plugin
 

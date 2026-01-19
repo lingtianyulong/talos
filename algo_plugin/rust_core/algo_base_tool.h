@@ -2,30 +2,33 @@
 #define ALGO_BASE_TOOL_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-struct ToolObject;
+  struct ToolObject;
 
-using ToolNameFunc = const char *(*)(ToolObject *);
-using ToolInitFunc = bool (*)(ToolObject *);
-using ToolRunFunc = int (*)(ToolObject *);
-using ToolDestroyFunc = void (*)(ToolObject *);
+  using ToolNameFunc = const char *(*)(ToolObject *);
+  using ToolInitFunc = bool (*)(ToolObject *);
+  using ToolRunFunc = int (*)(ToolObject *);
+  using ToolDestroyFunc = void (*)(ToolObject *);
 
-struct ToolVTable {
-  ToolNameFunc name;
-  ToolInitFunc init;
-  ToolRunFunc run;
-  ToolDestroyFunc destroy;
-};
+  struct ToolVTable
+  {
+    ToolNameFunc name;
+    ToolInitFunc init;
+    ToolRunFunc run;
+    ToolDestroyFunc destroy;
+  };
 
-struct Tool {
-  ToolObject *obj;
-  ToolVTable *vtable;
-}
+  struct Tool
+  {
+    ToolObject *obj;
+    ToolVTable *vtable;
+  };
 
 #ifdef __cplusplus
 }
 #endif
 
-#define ALGO_BASE_TOOL_H
+#endif ALGO_BASE_TOOL_H

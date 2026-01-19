@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.19)
 project(algo_plugin LANGUAGES CXX)
 
+find_package(Qt6 REQUIRED COMPONENTS Core)
+
 file (GLOB SOURCES *.cpp *.h)
 file (GLOB_RECURSE RUST_SOURCES rust_core/*.h)
 
@@ -16,3 +18,5 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     file(GLOB RELEASE_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/algo_libs/release/*.lib")
     target_link_libraries(algo_plugin PRIVATE ${RELEASE_LIBS})
 endif()
+
+target_link_libraries(algo_plugin PRIVATE Qt6::Core)
