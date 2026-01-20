@@ -24,7 +24,7 @@ add_library(${LIBRARY_NAME} STATIC
 )
 
 # 设置包含目录
-target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} )
+target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(LOGGER_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/debug/logger.lib")

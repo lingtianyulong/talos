@@ -19,4 +19,4 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_link_libraries(algo_plugin PRIVATE ${RELEASE_LIBS})
 endif()
 
-target_link_libraries(algo_plugin PRIVATE Qt6::Core)
+target_link_libraries(algo_plugin PRIVATE talos_logger Qt6::Core)
