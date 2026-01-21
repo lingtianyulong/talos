@@ -15,6 +15,12 @@
 #define ALGO_PLUGIN_EXPORT
 #endif
 
+/// @brief 插件管理类
+/// @details 负责加载和卸载算法插件, 用于对接 rust 算法插件
+/// @note 插件必须实现ToolCreateFunc函数，返回Tool结构体
+/// @note 插件必须实现ToolVTable结构体，包含name, init, run, destroy函数指针
+/// @note 插件必须实现ToolObject结构体，作为插件的上下文
+
 namespace talos::plugin {
 class ALGO_PLUGIN_EXPORT PluginManager {
 public:
