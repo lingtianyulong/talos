@@ -17,7 +17,6 @@ void free_http_response(char *post);
 
 #ifdef __cplusplus
 }
-
 #endif
 } // namespace utils
 

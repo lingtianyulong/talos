@@ -7,6 +7,7 @@ Item {
     width: _width >= 0 ? _width : (parent ? parent.width : implicitWidth)
     height: 40
 
+    // 加载 iconfont 字体
     FontLoader {
         id: iconFont
         source: "qrc:/font/iconfont.ttf"
