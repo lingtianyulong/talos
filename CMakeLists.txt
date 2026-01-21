@@ -89,6 +89,7 @@ target_link_libraries(talos
         dblib
         talos_models
         talos_logger
+        algo_plugin
         Qt::Core
         Qt::Widgets
         Qt::Quick

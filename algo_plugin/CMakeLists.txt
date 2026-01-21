@@ -8,7 +8,9 @@ file (GLOB_RECURSE RUST_SOURCES rust_core/*.h)
 
 add_library(algo_plugin SHARED ${SOURCES} ${RUST_SOURCES})
 
-target_include_directories(algo_plugin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(algo_plugin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR})
+
+target_compile_definitions(algo_plugin PRIVATE ALGO_PLUGIN_LIBRARY)
 
 # Link libraries based on build type
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

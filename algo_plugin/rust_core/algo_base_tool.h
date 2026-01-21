@@ -20,12 +20,13 @@ struct ToolVTable {
 };
 
 struct Tool {
-  ToolObject *obj;
   ToolVTable *vtable;
+  ToolObject *obj;
 };
 
+using ToolCreateFunc = Tool (*)();
 #ifdef __cplusplus
 }
 #endif
 
-#endif ALGO_BASE_TOOL_H
+#endif // ALGO_BASE_TOOL_H

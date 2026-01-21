@@ -12,6 +12,7 @@ pub extern "C" fn init(obj: *mut ToolObject) -> bool {
 }
 
 pub extern "C" fn run(obj: *mut ToolObject) -> i32 {
+    println!("run convert color tools!");
     unsafe { base_tool::glue::run::<ColorConvertTool>(obj) }
 }
 

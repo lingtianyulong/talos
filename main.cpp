@@ -1,3 +1,4 @@
+#include "algo_plugin/algoplugin.h"
 #include "logger/logger.h"
 #include "ui/logindialog.h"
 #include "ui/mainwidget.h"
@@ -9,6 +10,7 @@
 #include <QtQuickControls2/QtQuickControls2>
 
 using namespace talos;
+using namespace talos::plugin;
 
 int main(int argc, char *argv[]) {
 
@@ -31,6 +33,10 @@ int main(int argc, char *argv[]) {
   if (!Logger::initLog(logConfigPath.toStdString().c_str())) {
     QMessageBox::warning(nullptr, "Warn", QObject::tr("日志初始化失败"));
   }
+
+  QString pluginPath =
+      QApplication::applicationDirPath() + "/color_convert_tool.dll";
+  PluginManager::instance().loadAlgoPlugins(pluginPath.toStdString());
 
   Logger::Info("程序开始启动......");
 

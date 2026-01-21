@@ -5,8 +5,18 @@
 #include <QPointer>
 #include <string>
 
+#ifdef _WIN32
+#ifdef ALGO_PLUGIN_LIBRARY
+#define ALGO_PLUGIN_EXPORT __declspec(dllexport)
+#else
+#define ALGO_PLUGIN_EXPORT __declspec(dllimport)
+#endif
+#else
+#define ALGO_PLUGIN_EXPORT
+#endif
+
 namespace talos::plugin {
-class PluginManager {
+class ALGO_PLUGIN_EXPORT PluginManager {
 public:
   ~PluginManager();
   static PluginManager &instance();
