@@ -3,7 +3,9 @@
 #include "rust_core/algo_base_tool.h"
 #include <QLibrary>
 #include <QPointer>
+#include <map>
 #include <string>
+#include <vector>
 
 #ifdef _WIN32
 #ifdef ALGO_PLUGIN_LIBRARY
@@ -32,12 +34,14 @@ public:
   PluginManager(PluginManager &&) = delete;
   PluginManager &operator=(PluginManager &&) = delete;
 
-  bool loadAlgoPlugins(const std::string &pluginDir);
+  bool loadAlgoPlugins(const QString &pluginDir);
   void unloadAlgoPlugins();
+  size_t toolCount() const { return _tools.size(); }
 
 private:
   PluginManager();
-  QPointer<QLibrary> _lib = nullptr;
+  std::vector<QPointer<QLibrary>> _libs;
+  std::map<std::string, Tool> _tools;
 };
 
 } // namespace talos::plugin

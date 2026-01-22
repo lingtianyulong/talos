@@ -3,6 +3,7 @@
 #include "ui/logindialog.h"
 #include "ui/mainwidget.h"
 #include <QApplication>
+#include <QCoreApplication>
 #include <QDir>
 #include <QMessageBox>
 #include <QObject>
@@ -34,9 +35,15 @@ int main(int argc, char *argv[]) {
     QMessageBox::warning(nullptr, "Warn", QObject::tr("日志初始化失败"));
   }
 
-  QString pluginPath =
-      QApplication::applicationDirPath() + "/color_convert_tool.dll";
-  PluginManager::instance().loadAlgoPlugins(pluginPath.toStdString());
+  QString pluginPath = QApplication::applicationDirPath() + "/algo_libs";
+  Logger::Info("Loading plugins from: " + pluginPath.toStdString());
+  if (PluginManager::instance().loadAlgoPlugins(pluginPath)) {
+    QCoreApplication::addLibraryPath(pluginPath);
+    Logger::Info("Plugins loaded successfully, tool count: " +
+                 std::to_string(PluginManager::instance().toolCount()));
+  } else {
+    Logger::Error("Failed to load plugins from: " + pluginPath.toStdString());
+  }
 
   Logger::Info("程序开始启动......");
 
