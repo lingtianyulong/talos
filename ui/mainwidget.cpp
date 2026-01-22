@@ -405,9 +405,12 @@ void MainWidget::initUI() {
 
   ads::CDockWidget *toolDock = new ads::CDockWidget("工具", manager);
   // 禁用关闭和浮动功能
-  toolDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
-  toolDock->setFeature(ads::CDockWidget::DockWidgetFloatable, false);
+  // toolDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
+  // toolDock->setFeature(ads::CDockWidget::DockWidgetFloatable, false);
   manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
+  toolDock->setFeatures(ads::CDockWidget::DockWidgetClosable |
+                        ads::CDockWidget::DockWidgetMovable |
+                        ads::CDockWidget::DockWidgetFloatable);
 
   _mainLayout->addWidget(manager);
 }
