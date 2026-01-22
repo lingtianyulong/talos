@@ -70,8 +70,12 @@ add_library(qtadvanceddocking SHARED IMPORTED)
 set_target_properties(qtadvanceddocking PROPERTIES 
     IMPORTED_LOCATION_DEBUG "${ADS_ROOT}/bin/qtadvanceddocking.dll"
     IMPORTED_LOCATION_RELEASE "${ADS_ROOT}/bin/qtadvanceddocking.dll"
+    IMPORTED_LOCATION_MINSIZEREL "${ADS_ROOT}/bin/qtadvanceddocking.dll"
+    IMPORTED_LOCATION_RELWITHDEBINFO "${ADS_ROOT}/bin/qtadvanceddocking.dll"
     IMPORTED_IMPLIB_DEBUG "${ADS_ROOT}/lib/qtadvanceddockingd.lib"
     IMPORTED_IMPLIB_RELEASE "${ADS_ROOT}/lib/qtadvanceddocking.lib"
+    IMPORTED_IMPLIB_MINSIZEREL "${ADS_ROOT}/lib/qtadvanceddocking.lib"
+    IMPORTED_IMPLIB_RELWITHDEBINFO "${ADS_ROOT}/lib/qtadvanceddocking.lib"
     INTERFACE_INCLUDE_DIRECTORIES "${ADS_ROOT}/include"
 )
 

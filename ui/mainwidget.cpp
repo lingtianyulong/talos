@@ -26,6 +26,8 @@
 
 #include "../logger/logger.h"
 #include "../utils/font_helper.h"
+#include "DockManager.h"
+#include "DockWidget.h"
 #include "capture/rust/capture_rust.h"
 #include "controls/buttons/default_button.h"
 #include "controls/messagebox/messagebox.h"
@@ -47,11 +49,26 @@ MainWidget::MainWidget(QWidget *parent)
   // 初始化默认几何尺寸
   _normalGeometry = QRect(0, 0, 1024, 768);
 
-  initUI();
-  initTitle();
+  QString fontFamily =
+      utils::FontHelper::loadApplicationFont(":/font/iconfont.ttf");
+  if (fontFamily.isEmpty()) {
+    talos::Logger::Warn("Failed to load icon font!");
+    fontFamily = utils::FontHelper::getDefaultFallbackFont();
+  }
 
-  _view = new ImageViewer(this);
-  _mainLayout->addWidget(_view);
+  _iconfont = QFont(fontFamily, 14);
+
+  if (_mainLayout == nullptr) {
+    _mainLayout = new QVBoxLayout(this);
+    _mainLayout->setContentsMargins(0, 0, 0, 0);
+    _mainLayout->setSpacing(0);
+  }
+
+  initTitle();
+  initUI();
+
+  // _view = new ImageViewer(this);
+  // _mainLayout->addWidget(_view);
 }
 
 MainWidget::~MainWidget() { delete ui; }
@@ -317,22 +334,82 @@ void MainWidget::initTitle() {
 }
 
 void MainWidget::initUI() {
-  QString fontFamily =
-      utils::FontHelper::loadApplicationFont(":/font/iconfont.ttf");
-  if (fontFamily.isEmpty()) {
-    talos::Logger::Warn("Failed to load icon font!");
-    fontFamily = utils::FontHelper::getDefaultFallbackFont();
-  }
+  ads::CDockManager *manager = new ads::CDockManager(this);
 
-  _iconfont = QFont(fontFamily, 14);
+  // 更加彻底的透明样式设置，并隐藏关闭按钮和其他控制按钮
+  manager->setStyleSheet(
+      "ads--CDockManager, ads--CDockContainerWidget, ads--CDockAreaWidget, "
+      "ads--CDockWidget {"
+      "  background: transparent;"
+      "  background-color: transparent;"
+      "  border: none;"
+      "}"
+      "ads--CDockAreaTabBar {"
+      "  background: transparent;"
+      "  background-color: transparent;"
+      "}"
+      "ads--CDockWidgetTab {"
+      "  background: rgba(255, 255, 255, 30);"
+      "  color: snow;"
+      "  border-radius: 3px;"
+      "  margin: 2px;"
+      "  padding: 4px 10px;"
+      "}"
+      "ads--CDockWidgetTab[active=\"true\"] {"
+      "  background: rgba(255, 255, 255, 80);"
+      "  font-weight: bold;"
+      "}"
+      "ads--CDockAreaTitleBar {"
+      "  background: rgba(0, 0, 0, 30);"
+      "  border-bottom: 1px solid rgba(255, 255, 255, 10);"
+      "}"
+      "ads--CDockAreaTitleBar QLabel {"
+      "  color: snow;"
+      "}"
+      "QSplitter::handle {"
+      "  background: rgba(255, 255, 255, 15);"
+      "}"
+      "/* 隐藏所有关闭、菜单、浮动按钮 */"
+      "ads--CDockAreaTitleBar QPushButton,"
+      "ads--CDockWidgetTab QPushButton {"
+      "  background: transparent;"
+      "  border: none;"
+      "  width: 0px;"
+      "  height: 0px;"
+      "  qproperty-icon: url();"
+      "  qproperty-text: \"\";"
+      "}"
+      "/* 针对停靠窗内部的滚动区域等可能存在的白底部件进行穿透 */"
+      "QScrollArea, QScrollArea > QWidget > QWidget {"
+      "  background: transparent;"
+      "  background-color: transparent;"
+      "  border: none;"
+      "}");
 
-  if (_mainLayout == nullptr) {
-    _mainLayout = new QVBoxLayout(this);
-    _mainLayout->setContentsMargins(0, 0, 0, 0);
-    _mainLayout->setSpacing(0);
-  }
+  // 创建中心窗口
+  ads::CDockWidget *centralDock = new ads::CDockWidget(" ", manager);
+  centralDock->setFeatures(ads::CDockWidget::NoDockWidgetFeatures);
+  QWidget *centralWidget = new QWidget();
+  centralWidget->setObjectName("centralContentWidget");
+  centralWidget->setStyleSheet(
+      "#centralContentWidget { background: transparent; }");
+  centralDock->setWidget(centralWidget);
+  manager->setCentralWidget(centralDock);
 
-  this->setLayout(_mainLayout);
+  // 添加其他停靠窗口
+  ads::CDockWidget *propDock = new ads::CDockWidget("属性", manager);
+  // 禁用关闭和浮动功能
+  propDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
+  propDock->setFeature(ads::CDockWidget::DockWidgetFloatable, false);
+  manager->addDockWidget(ads::RightDockWidgetArea, propDock);
+
+  ads::CDockWidget *toolDock = new ads::CDockWidget("工具", manager);
+  // 禁用关闭和浮动功能
+  toolDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
+  toolDock->setFeature(ads::CDockWidget::DockWidgetFloatable, false);
+  manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
+
+  _mainLayout->addWidget(manager);
 }
 
 void MainWidget::closeClicked() {
