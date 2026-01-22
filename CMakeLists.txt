@@ -10,6 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
+
 foreach(CONFIG_TYPE Debug Release)
     string(TOUPPER ${CONFIG_TYPE} CONFIG_TYPE_UPPER)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${CONFIG_TYPE_UPPER} "${CMAKE_SOURCE_DIR}/build/${CONFIG_TYPE}")
@@ -55,8 +56,6 @@ if (WIN32)
     set(APP_RC ${CMAKE_SOURCE_DIR}/version.rc)
 endif()
 
-
-
 qt_standard_project_setup()
 
 qt_add_executable(talos
@@ -64,6 +63,16 @@ qt_add_executable(talos
     main.cpp
     resources/resource.qrc
     ${APP_RC}
+)
+# 导入 qtadvanceddocking 库
+set (ADS_ROOT ${CMAKE_SOURCE_DIR}/third_library/qt-advanced-docking-system)
+add_library(qtadvanceddocking SHARED IMPORTED)
+set_target_properties(qtadvanceddocking PROPERTIES 
+    IMPORTED_LOCATION_DEBUG "${ADS_ROOT}/bin/qtadvanceddocking.dll"
+    IMPORTED_LOCATION_RELEASE "${ADS_ROOT}/bin/qtadvanceddocking.dll"
+    IMPORTED_IMPLIB_DEBUG "${ADS_ROOT}/lib/qtadvanceddockingd.lib"
+    IMPORTED_IMPLIB_RELEASE "${ADS_ROOT}/lib/qtadvanceddocking.lib"
+    INTERFACE_INCLUDE_DIRECTORIES "${ADS_ROOT}/include"
 )
 
 add_subdirectory(logger)         # 然后是 logger
@@ -76,7 +85,6 @@ add_subdirectory(encrypt)        # 添加 encrypt 目录
 add_subdirectory(capture)        # 添加 capture 目录
 add_subdirectory(algo_plugin)    # 添加 algo_plugin 目录
 add_subdirectory(ui)             # 最后是 ui
-
 
 target_link_libraries(talos
     PRIVATE
@@ -95,6 +103,7 @@ target_link_libraries(talos
         Qt::Quick
         Qt::QuickWidgets
         Qt::QuickControls2
+        qtadvanceddocking
 )
 
 include(GNUInstallDirs)
