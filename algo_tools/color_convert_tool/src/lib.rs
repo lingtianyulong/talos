@@ -1,5 +1,6 @@
 pub mod api;
 pub mod tool;
+pub mod tool_logger;
 
 #[allow(unused_imports)]
 use crate::api::*;

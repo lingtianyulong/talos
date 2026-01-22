@@ -1,3 +1,4 @@
+use crate::tool_logger;
 use base_tool::ToolTrait;
 
 pub struct ColorConvertTool {
@@ -16,17 +17,17 @@ impl ToolTrait for ColorConvertTool {
     }
 
     fn init(&self) -> bool {
-        println!("init color convert tool");
+        tool_logger::info("init color convert tool");
         true
     }
 
     fn run(&self) -> i32 {
-        println!("run color convert tool");
+        tool_logger::info("run color convert tool");
         0
     }
 
     fn destroy(&self) {
         // 什么都不做
-        println!("destroy color convert tool");
+        tool_logger::info("destroy color convert tool");
     }
 }
