@@ -336,7 +336,9 @@ void MainWidget::initTitle() {
 
 void MainWidget::initUI() {
   // 设置 ADS 全局配置
-  ads::CDockManager::setConfigFlag(ads::CDockManager::AlwaysShowTabs, true);
+  // ads::CDockManager::setConfigFlag(ads::CDockManager::AlwaysShowTabs, true);
+  ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton,
+                                   true);
   ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
   ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize,
                                    true);
@@ -393,8 +395,10 @@ void MainWidget::initUI() {
   // 添加其他停靠窗口
   ads::CDockWidget *propDock = new ads::CDockWidget("属性", manager);
   // 禁用关闭和浮动功能
-  propDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
-  propDock->setFeature(ads::CDockWidget::DockWidgetFloatable, false);
+  propDock->setFeature(ads::CDockWidget::DockWidgetClosable, true);
+  propDock->setFeature(ads::CDockWidget::DockWidgetFloatable, true);
+  propDock->setFeature(ads::CDockWidget::DockWidgetMovable, true);
+  propDock->setFeature(ads::CDockWidget::DockWidgetPinnable, true);
   manager->addDockWidget(ads::RightDockWidgetArea, propDock);
 
   ads::CDockWidget *toolDock = new ads::CDockWidget("工具", manager);

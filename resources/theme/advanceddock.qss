@@ -60,6 +60,14 @@
      border-radius: 2px;
  }
 
+ /* 隐藏 TabsMenuButton 右下角的小三角 (menu-indicator) */
+ ads--CDockAreaTitleBar QPushButton#tabsMenuButton::menu-indicator,
+ ads--CDockAreaTitleBar #tabsMenuButton::menu-indicator,
+ #tabsMenuButton::menu-indicator {
+     width: 0px;
+     height: 0px;
+ }
+
  /* 针对停靠窗内部的滚动区域等可能存在的白底部件进行穿透 */
  QScrollArea,
  QScrollArea>QWidget>QWidget {
