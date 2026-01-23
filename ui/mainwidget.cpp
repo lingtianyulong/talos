@@ -336,7 +336,6 @@ void MainWidget::initTitle() {
 
 void MainWidget::initUI() {
   // 设置 ADS 全局配置
-  // ads::CDockManager::setConfigFlag(ads::CDockManager::AlwaysShowTabs, true);
   ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton,
                                    true);
   ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
@@ -371,16 +370,6 @@ void MainWidget::initUI() {
 
   ads::CDockManager *manager = new ads::CDockManager(this);
   manager->setStyleSheet(""); // 清除 ADS 默认样式，允许全局 QSS 生效
-  // manager->setAutoHide(true);
-
-  // 确保新创建的浮动窗口也应用透明背景和样式
-  // connect(manager, &ads::CDockManager::floatingWidgetCreated,
-  //         [](ads::CFloatingDockContainer *floatingWidget) {
-  //           floatingWidget->setAttribute(Qt::WA_TranslucentBackground);
-  //           // 如果需要无边框浮动窗口，可以取消下面行的注释
-  //           // floatingWidget->setWindowFlags(floatingWidget->windowFlags() |
-  //           // Qt::FramelessWindowHint);
-  //         });
 
   // 创建中心窗口
   ads::CDockWidget *centralDock = new ads::CDockWidget(" ", manager);
