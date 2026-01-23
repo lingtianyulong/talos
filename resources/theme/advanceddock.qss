@@ -1,0 +1,61 @@
+ ads--CDockManager,
+ ads--CDockContainerWidget,
+ ads--CDockAreaWidget,
+ ads--CDockWidget {
+     background: transparent;
+     background-color: transparent;
+     border: none;
+ }
+
+ ads--CFloatingDockContainer {
+     background: rgba(0, 0, 0, 1);
+     border: none;
+ }
+
+ ads--CDockAreaTabBar {
+     background: transparent;
+     background-color: transparent;
+ }
+
+ ads--CDockWidgetTab {
+     background: rgba(255, 255, 255, 30);
+     color: snow;
+     border-radius: 3px;
+     margin: 2px;
+     padding: 4px 10px;
+ }
+
+ ads--CDockWidgetTab[activeTab=true] {
+     background: rgba(255, 255, 255, 80);
+     font-weight: bold;
+ }
+
+ ads--CDockAreaTitleBar {
+     background: rgba(0, 0, 0, 30);
+     border-bottom: 1px solid rgba(255, 255, 255, 10);
+ }
+
+ ads--CDockAreaTitleBar QLabel {
+     color: snow;
+ }
+
+ QSplitter::handle {
+     background: rgba(255, 255, 255, 15);
+ }
+
+ /* 隐藏所有关闭、菜单、浮动按钮 */
+ ads--CDockAreaTitleBar QPushButton,
+ ads--CDockWidgetTab QPushButton {
+     background: transparent;
+     border: none;
+     width: 0px;
+     height: 0px;
+ }
+
+ /* 针对停靠窗内部的滚动区域等可能存在的白底部件进行穿透 */
+ QScrollArea,
+ QScrollArea>QWidget>QWidget {
+     background: transparent;
+     background-color: transparent;
+     border: none;
+ }

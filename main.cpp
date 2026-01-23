@@ -48,14 +48,20 @@ int main(int argc, char *argv[]) {
   Logger::Info("程序开始启动......");
 
   // 加载 qss
-  QStringList qssFiles = {":/theme/buttons.qss", ":/theme/checkbox.qss",
-                          ":/theme/menubar.qss"};
+  QStringList qssFiles = {
+      ":/theme/advanceddock.qss",
+      ":/theme/buttons.qss",
+      ":/theme/checkbox.qss",
+      ":/theme/menubar.qss",
+  };
   QString qss = "";
   for (auto &file : qssFiles) {
     QFile f(file);
     if (f.open(QFile::ReadOnly)) {
       qss += f.readAll();
       qss += "\n";
+    } else {
+      Logger::Error("Failed to load qss file: " + file.toStdString());
     }
   }
   qApp->setStyleSheet(qss);

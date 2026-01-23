@@ -13,10 +13,11 @@
   <qresource prefix="/icons">
     <file alias="icon.ico">icons/icon.ico</file>
   </qresource>
-  <qresource prefix="theme">
+  <qresource prefix="/theme">
     <file alias="checkbox.qss">theme/checkbox.qss</file>
     <file alias="buttons.qss">theme/buttons.qss</file>
     <file alias="menubar.qss">theme/menubar.qss</file>
+    <file alias="advanceddock.qss">theme/advanceddock.qss</file>
   </qresource>
   <qresource prefix="/avatar">
     <file alias="avatar.png">avatar/avatar.png</file>

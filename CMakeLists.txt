@@ -64,6 +64,7 @@ qt_add_executable(talos
     resources/resource.qrc
     ${APP_RC}
 )
+
 # 导入 qtadvanceddocking 库
 set (ADS_ROOT ${CMAKE_SOURCE_DIR}/third_library/qt-advanced-docking-system)
 add_library(qtadvanceddocking SHARED IMPORTED)

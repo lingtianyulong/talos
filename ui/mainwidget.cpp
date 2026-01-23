@@ -334,57 +334,23 @@ void MainWidget::initTitle() {
 }
 
 void MainWidget::initUI() {
-  ads::CDockManager *manager = new ads::CDockManager(this);
+  // 设置 ADS 全局配置
+  ads::CDockManager::setConfigFlag(ads::CDockManager::AlwaysShowTabs, true);
+  ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
+  ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize,
+                                   true);
 
-  // 更加彻底的透明样式设置，并隐藏关闭按钮和其他控制按钮
-  manager->setStyleSheet(
-      "ads--CDockManager, ads--CDockContainerWidget, ads--CDockAreaWidget, "
-      "ads--CDockWidget {"
-      "  background: transparent;"
-      "  background-color: transparent;"
-      "  border: none;"
-      "}"
-      "ads--CDockAreaTabBar {"
-      "  background: transparent;"
-      "  background-color: transparent;"
-      "}"
-      "ads--CDockWidgetTab {"
-      "  background: rgba(255, 255, 255, 30);"
-      "  color: snow;"
-      "  border-radius: 3px;"
-      "  margin: 2px;"
-      "  padding: 4px 10px;"
-      "}"
-      "ads--CDockWidgetTab[active=\"true\"] {"
-      "  background: rgba(255, 255, 255, 80);"
-      "  font-weight: bold;"
-      "}"
-      "ads--CDockAreaTitleBar {"
-      "  background: rgba(0, 0, 0, 30);"
-      "  border-bottom: 1px solid rgba(255, 255, 255, 10);"
-      "}"
-      "ads--CDockAreaTitleBar QLabel {"
-      "  color: snow;"
-      "}"
-      "QSplitter::handle {"
-      "  background: rgba(255, 255, 255, 15);"
-      "}"
-      "/* 隐藏所有关闭、菜单、浮动按钮 */"
-      "ads--CDockAreaTitleBar QPushButton,"
-      "ads--CDockWidgetTab QPushButton {"
-      "  background: transparent;"
-      "  border: none;"
-      "  width: 0px;"
-      "  height: 0px;"
-      "  qproperty-icon: url();"
-      "  qproperty-text: \"\";"
-      "}"
-      "/* 针对停靠窗内部的滚动区域等可能存在的白底部件进行穿透 */"
-      "QScrollArea, QScrollArea > QWidget > QWidget {"
-      "  background: transparent;"
-      "  background-color: transparent;"
-      "  border: none;"
-      "}");
+  ads::CDockManager *manager = new ads::CDockManager(this);
+  manager->setStyleSheet(""); // 清除 ADS 默认样式，允许全局 QSS 生效
+
+  // 确保新创建的浮动窗口也应用透明背景和样式
+  connect(manager, &ads::CDockManager::floatingWidgetCreated,
+          [](ads::CFloatingDockContainer *floatingWidget) {
+            floatingWidget->setAttribute(Qt::WA_TranslucentBackground);
+            // 如果需要无边框浮动窗口，可以取消下面行的注释
+            // floatingWidget->setWindowFlags(floatingWidget->windowFlags() |
+            // Qt::FramelessWindowHint);
+          });
 
   // 创建中心窗口
   ads::CDockWidget *centralDock = new ads::CDockWidget(" ", manager);
@@ -404,13 +370,11 @@ void MainWidget::initUI() {
   manager->addDockWidget(ads::RightDockWidgetArea, propDock);
 
   ads::CDockWidget *toolDock = new ads::CDockWidget("工具", manager);
-  // 禁用关闭和浮动功能
-  // toolDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
-  // toolDock->setFeature(ads::CDockWidget::DockWidgetFloatable, false);
-  manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
   toolDock->setFeatures(ads::CDockWidget::DockWidgetClosable |
                         ads::CDockWidget::DockWidgetMovable |
-                        ads::CDockWidget::DockWidgetFloatable);
+                        ads::CDockWidget::DockWidgetFloatable |
+                        ads::CDockWidget::DockWidgetPinnable);
+  manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
 
   _mainLayout->addWidget(manager);
 }
