@@ -28,6 +28,7 @@
 #include "../utils/font_helper.h"
 #include "DockManager.h"
 #include "DockWidget.h"
+#include "IconProvider.h"
 #include "capture/rust/capture_rust.h"
 #include "controls/buttons/default_button.h"
 #include "controls/messagebox/messagebox.h"
@@ -339,18 +340,45 @@ void MainWidget::initUI() {
   ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
   ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize,
                                    true);
+  ads::CDockManager::setAutoHideConfigFlag(
+      ads::CDockManager::AutoHideFeatureEnabled, true);
+  ads::CDockManager::setAutoHideConfigFlag(
+      ads::CDockManager::DockAreaHasAutoHideButton, true);
+  ads::CDockManager::setAutoHideConfigFlag(
+      ads::CDockManager::AutoHideButtonCheckable, true);
+
+  // 使用 IconProvider 全局设置图标，解决 QSS 中的 Unknown 警告
+  ads::CIconProvider &provider = ads::CDockManager::iconProvider();
+  provider.registerCustomIcon(ads::TabCloseIcon,
+                              QIcon(":/ads/images/close-button.svg"));
+  provider.registerCustomIcon(ads::DockAreaCloseIcon,
+                              QIcon(":/ads/images/close-button.svg"));
+
+  // 设置 Pin 按钮图标及其状态
+  QIcon pinIcon;
+  pinIcon.addFile(":/ads/images/vs-pin-button.svg", QSize(), QIcon::Normal,
+                  QIcon::Off);
+  pinIcon.addFile(":/ads/images/vs-pin-button-pinned.svg", QSize(),
+                  QIcon::Normal, QIcon::On);
+  provider.registerCustomIcon(ads::AutoHideIcon, pinIcon);
+
+  provider.registerCustomIcon(ads::DockAreaMenuIcon,
+                              QIcon(":/ads/images/tabs-menu-button.svg"));
+  provider.registerCustomIcon(ads::DockAreaUndockIcon,
+                              QIcon(":/ads/images/detach-button.svg"));
 
   ads::CDockManager *manager = new ads::CDockManager(this);
   manager->setStyleSheet(""); // 清除 ADS 默认样式，允许全局 QSS 生效
+  // manager->setAutoHide(true);
 
   // 确保新创建的浮动窗口也应用透明背景和样式
-  connect(manager, &ads::CDockManager::floatingWidgetCreated,
-          [](ads::CFloatingDockContainer *floatingWidget) {
-            floatingWidget->setAttribute(Qt::WA_TranslucentBackground);
-            // 如果需要无边框浮动窗口，可以取消下面行的注释
-            // floatingWidget->setWindowFlags(floatingWidget->windowFlags() |
-            // Qt::FramelessWindowHint);
-          });
+  // connect(manager, &ads::CDockManager::floatingWidgetCreated,
+  //         [](ads::CFloatingDockContainer *floatingWidget) {
+  //           floatingWidget->setAttribute(Qt::WA_TranslucentBackground);
+  //           // 如果需要无边框浮动窗口，可以取消下面行的注释
+  //           // floatingWidget->setWindowFlags(floatingWidget->windowFlags() |
+  //           // Qt::FramelessWindowHint);
+  //         });
 
   // 创建中心窗口
   ads::CDockWidget *centralDock = new ads::CDockWidget(" ", manager);

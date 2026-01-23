@@ -43,13 +43,21 @@
      background: rgba(255, 255, 255, 15);
  }
 
- /* 隐藏所有关闭、菜单、浮动按钮 */
+ /* 恢复并美化按钮 */
  ads--CDockAreaTitleBar QPushButton,
  ads--CDockWidgetTab QPushButton {
      background: transparent;
      border: none;
-     width: 0px;
-     height: 0px;
+     width: 16px;
+     height: 16px;
+     padding: 2px;
+     margin-left: 2px;
+ }
+
+ ads--CDockAreaTitleBar QPushButton:hover,
+ ads--CDockWidgetTab QPushButton:hover {
+     background: rgba(255, 255, 255, 30);
+     border-radius: 2px;
  }
 
  /* 针对停靠窗内部的滚动区域等可能存在的白底部件进行穿透 */
