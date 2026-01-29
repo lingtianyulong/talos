@@ -1,21 +1,30 @@
 #include "dock_panel.h"
+#include "../../utils/font_helper.h"
 #include "DockManager.h"
+#include "DockWidgetTab.h"
 #include "IconProvider.h"
 #include <QFile>
+#include <QIcon>
+#include <QPainter>
+#include <QPixmap>
 
 namespace controls::dockpanel {
 DockPanel::DockPanel(const QString &title, QWidget *parent)
     : ads::CDockWidget(title, parent) {
-  // init();
+  loadFont();
 }
 
 DockPanel::DockPanel(ads::CDockManager *manager, const QString &title,
                      QWidget *parent)
     : ads::CDockWidget(manager, title, parent) {
-  // init();
+  loadFont();
 }
 
 DockPanel::~DockPanel() {}
+
+void DockPanel::loadFont() {
+  _iconFont = utils::FontHelper::getFont(":/font/iconfont.ttf", 14);
+}
 
 void DockPanel::initFeatures() {
   // 每个实例特定的初始化逻辑（目前为空，全局逻辑已移动到 initGlobalAdsConfig）
@@ -104,4 +113,16 @@ void DockPanel::initGlobalAdsConfig() {
       createWhiteIcon(":/ads/images/minimize-button.svg"));
 }
 
+/// @brief 使用 iconfont, 设置图标字体
+/// @param font 字体名称
+void DockPanel::setIconfont(const QString &font) {
+  QPixmap pixmap(16, 16);
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  painter.setFont(_iconFont);
+  painter.setPen(Qt::white);
+  painter.drawText(pixmap.rect(), Qt::AlignCenter, font);
+  setIcon(QIcon(pixmap));
+  this->tabWidget()->setIconSize(QSize(16, 16));
+}
 } // namespace controls::dockpanel

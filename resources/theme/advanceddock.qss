@@ -8,7 +8,7 @@
  }
 
  ads--CFloatingDockContainer {
-     background: rgba(0, 0, 0, 1);
+     background: rgba(106, 122, 239, 1);
      border: none;
  }
 
@@ -20,9 +20,14 @@
  ads--CDockWidgetTab {
      background: rgba(255, 255, 255, 30);
      color: snow;
-     border-radius: 3px;
-     margin: 2px;
-     padding: 4px 10px;
+     border-radius: 0px;
+     margin: 0px;
+     padding: 0px 2px 0px 2px;
+ }
+
+ ads--CDockWidgetTab QLabel {
+     margin-left: 0px;
+     padding: 2px;
  }
 
  ads--CDockWidgetTab[activeTab=true] {
@@ -37,6 +42,8 @@
 
  ads--CDockAreaTitleBar QLabel {
      color: snow;
+     margin-left: 0px;
+     padding: 0px;
  }
 
  QSplitter::handle {
@@ -50,14 +57,14 @@
      border: none;
      width: 16px;
      height: 16px;
-     padding: 2px;
-     margin-left: 2px;
+     padding: 0px;
+     margin-left: 0px;
  }
 
  ads--CDockAreaTitleBar QPushButton:hover,
  ads--CDockWidgetTab QPushButton:hover {
      background: rgba(255, 255, 255, 30);
-     border-radius: 2px;
+     border-radius: 0px;
  }
 
  /* 隐藏 TabsMenuButton 右下角的小三角 (menu-indicator) */

@@ -2,6 +2,7 @@
 #define DOCKPANEL_H
 
 #include "DockWidget.h"
+#include <QFont>
 
 namespace ads {
 class CDockManager;
@@ -18,6 +19,11 @@ public:
 
   static void initGlobalAdsConfig();
   void initFeatures();
+  void setIconfont(const QString &font);
+
+private:
+  void loadFont();
+  QFont _iconFont;
 };
 } // namespace controls::dockpanel
 

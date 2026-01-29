@@ -18,7 +18,9 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMouseEvent>
+#include <QPainter>
 #include <QPainterPath>
+#include <QPixmap>
 #include <QPushButton>
 #include <QScreen>
 #include <QTimer>
@@ -26,8 +28,11 @@
 
 #include "../logger/logger.h"
 #include "../utils/font_helper.h"
+#include "DockAreaTitleBar.h"
+#include "DockAreaWidget.h"
 #include "DockManager.h"
 #include "DockWidget.h"
+#include "DockWidgetTab.h"
 #include "IconProvider.h"
 #include "capture/rust/capture_rust.h"
 #include "controls/buttons/default_button.h"
@@ -58,7 +63,6 @@ MainWidget::MainWidget(QWidget *parent)
     talos::Logger::Warn("Failed to load icon font!");
     fontFamily = utils::FontHelper::getDefaultFallbackFont();
   }
-
   _iconfont = QFont(fontFamily, 14);
 
   if (_mainLayout == nullptr) {
