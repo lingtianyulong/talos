@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.19)
 
 project(controls VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
@@ -26,14 +26,17 @@ find_package(Qt6 COMPONENTS
 
 #add_subdirectory(buttons)
 
+# ADS is defined in the root CMakeLists.txt
+
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Link with Qt libraries
+# Link with Qt libraries and ADS
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        qtadvanceddocking
 )

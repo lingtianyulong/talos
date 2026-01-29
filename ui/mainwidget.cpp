@@ -31,8 +31,10 @@
 #include "IconProvider.h"
 #include "capture/rust/capture_rust.h"
 #include "controls/buttons/default_button.h"
+#include "controls/dock_panel/dock_panel.h"
 #include "controls/messagebox/messagebox.h"
 
+using namespace controls::dockpanel;
 using namespace controls::buttons;
 using namespace controls::image_viewer;
 using namespace controls::messagebox;
@@ -335,88 +337,17 @@ void MainWidget::initTitle() {
 }
 
 void MainWidget::initUI() {
-  // 设置 ADS 全局配置
-  ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton,
-                                   true);
-  ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
-  ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize,
-                                   true);
-  ads::CDockManager::setAutoHideConfigFlag(
-      ads::CDockManager::AutoHideFeatureEnabled, true);
-  ads::CDockManager::setAutoHideConfigFlag(
-      ads::CDockManager::DockAreaHasAutoHideButton, true);
-  ads::CDockManager::setAutoHideConfigFlag(
-      ads::CDockManager::AutoHideButtonCheckable, true);
 
-  // 使用 IconProvider 全局设置图标，解决 QSS 中的 Unknown 警告
-  ads::CIconProvider &provider = ads::CDockManager::iconProvider();
-
-  // 辅助函数：将 SVG 图标颜色修改为白色
-  auto createWhiteIcon = [](const QString &path) -> QIcon {
-    QFile file(path);
-    if (file.open(QIODevice::ReadOnly)) {
-      QByteArray data = file.readAll();
-      // 替换颜色值 #000000 为 #FFFFFF
-      data.replace("#000000", "#FFFAFA");
-      data.replace("fill:#000000", "fill:#FFFAFA");
-      data.replace("stroke:#000000", "stroke:#FFFAFA");
-      data.replace("style=\"-inkscape-stroke:none\"",
-                   "style=\"fill:#FFFAFA;-inkscape-stroke:none\"");
-
-      QPixmap pixmap;
-      pixmap.loadFromData(data);
-      return QIcon(pixmap);
-    }
-    return QIcon(path);
-  };
-
-  provider.registerCustomIcon(ads::TabCloseIcon,
-                              createWhiteIcon(":/ads/images/close-button.svg"));
-  provider.registerCustomIcon(ads::DockAreaCloseIcon,
-                              createWhiteIcon(":/ads/images/close-button.svg"));
-
-  QIcon pinIcon;
-  // 手动处理 Pin 图标的白色版本
-  auto createWhitePinIcon = [&](const QString &path) -> QPixmap {
-    QFile file(path);
-    if (file.open(QIODevice::ReadOnly)) {
-      QByteArray data = file.readAll();
-      data.replace("#000000", "#FFFAFA");
-      data.replace("fill:#000000", "fill:#FFFAFA");
-      data.replace("stroke:#000000", "stroke:#FFFAFA");
-      // 针对 vs-pin-button.svg 缺少 fill 属性的情况进行特殊处理
-      data.replace("style=\"-inkscape-stroke:none\"",
-                   "style=\"fill:#FFFAFA;-inkscape-stroke:none\"");
-      QPixmap pixmap;
-      pixmap.loadFromData(data);
-      return pixmap;
-    }
-    return QPixmap(path);
-  };
-
-  QPixmap unpinned = createWhitePinIcon(":/ads/images/vs-pin-button.svg");
-  QPixmap pinned = createWhitePinIcon(":/ads/images/vs-pin-button-pinned.svg");
-  pinIcon.addPixmap(unpinned, QIcon::Normal, QIcon::Off);
-  pinIcon.addPixmap(unpinned, QIcon::Active, QIcon::Off);
-  pinIcon.addPixmap(pinned, QIcon::Normal, QIcon::On);
-  pinIcon.addPixmap(pinned, QIcon::Active, QIcon::On);
-  provider.registerCustomIcon(ads::AutoHideIcon, pinIcon);
-
-  provider.registerCustomIcon(
-      ads::DockAreaMenuIcon,
-      createWhiteIcon(":/ads/images/tabs-menu-button.svg"));
-  provider.registerCustomIcon(
-      ads::DockAreaUndockIcon,
-      createWhiteIcon(":/ads/images/detach-button.svg"));
-  provider.registerCustomIcon(
-      ads::DockAreaMinimizeIcon,
-      createWhiteIcon(":/ads/images/minimize-button.svg"));
+  // 初始化 ADS 全局配置(只需调用一次), 必须先初始化再定义 manager
+  DockPanel::initGlobalAdsConfig();
 
   ads::CDockManager *manager = new ads::CDockManager(this);
   manager->setStyleSheet(""); // 清除 ADS 默认样式，允许全局 QSS 生效
 
   // 创建中心窗口
-  ads::CDockWidget *centralDock = new ads::CDockWidget(" ", manager);
+  // 注意：对于中心窗口，不要在构造函数中传递 manager，否则可能导致
+  // setCentralWidget 异常
+  DockPanel *centralDock = new DockPanel(manager, " ");
   centralDock->setFeatures(ads::CDockWidget::NoDockWidgetFeatures);
   QWidget *centralWidget = new QWidget();
   centralWidget->setObjectName("centralContentWidget");
@@ -426,19 +357,12 @@ void MainWidget::initUI() {
   manager->setCentralWidget(centralDock);
 
   // 添加其他停靠窗口
-  ads::CDockWidget *propDock = new ads::CDockWidget("属性", manager);
-  // 禁用关闭和浮动功能
-  propDock->setFeature(ads::CDockWidget::DockWidgetClosable, true);
-  propDock->setFeature(ads::CDockWidget::DockWidgetFloatable, true);
-  propDock->setFeature(ads::CDockWidget::DockWidgetMovable, true);
-  propDock->setFeature(ads::CDockWidget::DockWidgetPinnable, true);
+  DockPanel *propDock = new DockPanel(manager, "属性");
+  propDock->initFeatures();
   manager->addDockWidget(ads::RightDockWidgetArea, propDock);
 
-  ads::CDockWidget *toolDock = new ads::CDockWidget("工具", manager);
-  toolDock->setFeatures(ads::CDockWidget::DockWidgetClosable |
-                        ads::CDockWidget::DockWidgetMovable |
-                        ads::CDockWidget::DockWidgetFloatable |
-                        ads::CDockWidget::DockWidgetPinnable);
+  DockPanel *toolDock = new DockPanel(manager, "工具");
+  toolDock->initFeatures();
   manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
 
   _mainLayout->addWidget(manager);

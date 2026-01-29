@@ -67,9 +67,9 @@ qt_add_executable(talos
 
 # 导入 qtadvanceddocking 库
 set (ADS_ROOT ${CMAKE_SOURCE_DIR}/third_library/qt-advanced-docking-system)
-add_library(qtadvanceddocking SHARED IMPORTED)
+add_library(qtadvanceddocking SHARED IMPORTED GLOBAL)
 set_target_properties(qtadvanceddocking PROPERTIES 
-    IMPORTED_LOCATION_DEBUG "${ADS_ROOT}/bin/qtadvanceddocking.dll"
+    IMPORTED_LOCATION_DEBUG "${ADS_ROOT}/bin/qtadvanceddockingd.dll"
     IMPORTED_LOCATION_RELEASE "${ADS_ROOT}/bin/qtadvanceddocking.dll"
     IMPORTED_LOCATION_MINSIZEREL "${ADS_ROOT}/bin/qtadvanceddocking.dll"
     IMPORTED_LOCATION_RELWITHDEBINFO "${ADS_ROOT}/bin/qtadvanceddocking.dll"
