@@ -15,6 +15,8 @@
  ads--CDockAreaTabBar {
      background: transparent;
      background-color: transparent;
+     padding: 0px;
+     margin: 0px;
  }
 
  ads--CDockWidgetTab {
@@ -22,12 +24,12 @@
      color: snow;
      border-radius: 0px;
      margin: 0px;
-     padding: 0px 2px 0px 2px;
+     padding: 0px 4px 0px 4px;
  }
 
  ads--CDockWidgetTab QLabel {
      margin-left: 0px;
-     padding: 2px;
+     padding: 0px;
  }
 
  ads--CDockWidgetTab[activeTab=true] {
@@ -52,8 +54,15 @@
 
  /* 恢复并美化按钮 */
  ads--CDockAreaTitleBar QPushButton,
- ads--CDockWidgetTab QPushButton {
-     background: transparent;
+ ads--CDockAreaTitleBar QToolButton,
+ ads--CDockWidgetTab QPushButton,
+ ads--CDockWidgetTab QToolButton,
+ #dockAreaAutoHideButton,
+ #dockAreaCloseButton,
+ #detachGroupButton,
+ #tabsMenuButton {
+     background: transparent !important;
+     background-color: transparent !important;
      border: none;
      width: 16px;
      height: 16px;
@@ -62,8 +71,15 @@
  }
 
  ads--CDockAreaTitleBar QPushButton:hover,
- ads--CDockWidgetTab QPushButton:hover {
-     background: rgba(255, 255, 255, 30);
+ ads--CDockAreaTitleBar QToolButton:hover,
+ ads--CDockWidgetTab QPushButton:hover,
+ ads--CDockWidgetTab QToolButton:hover,
+ #dockAreaAutoHideButton:hover,
+ #dockAreaCloseButton:hover,
+ #detachGroupButton:hover,
+ #tabsMenuButton:hover,
+ #dockAreaAutoHideButton:checked {
+     background: rgba(255, 255, 255, 30) !important;
      border-radius: 0px;
  }
 

@@ -360,14 +360,26 @@ void MainWidget::initUI() {
   centralDock->setWidget(centralWidget);
   manager->setCentralWidget(centralDock);
 
+  DockPanel *toolDock = new DockPanel(manager, "工具");
+  toolDock->initFeatures();
+  manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
+
+  // auto area = toolDock->dockAreaWidget();
+  // auto titleBar = area->titleBar();
+  // auto label = titleBar->findChild<QLabel *>();
+  // if (label) {
+  //   label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+  // }
+  // titleBar->setStyleSheet("QWidget {"
+  //                         "background: transparent;"
+  //                         "color: snow;"
+  //                         "font-size: 14px;"
+  //                         "}");
+
   // 添加其他停靠窗口
   DockPanel *propDock = new DockPanel(manager, "属性");
   propDock->initFeatures();
   manager->addDockWidget(ads::RightDockWidgetArea, propDock);
-
-  DockPanel *toolDock = new DockPanel(manager, "工具");
-  toolDock->initFeatures();
-  manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
 
   _mainLayout->addWidget(manager);
 }
