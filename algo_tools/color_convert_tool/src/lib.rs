@@ -22,7 +22,7 @@ mod tests {
         let name = unsafe { CStr::from_ptr(name_fn(tool.obj) as *const c_char) }
             .to_str()
             .unwrap();
-        assert_eq!(name, "Color Convert Tool");
+        assert_eq!(name, "颜色转换");
 
         let init = unsafe { ((*tool.vtable).init)(tool.obj) };
         assert_eq!(init, true);

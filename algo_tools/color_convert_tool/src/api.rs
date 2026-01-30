@@ -28,6 +28,6 @@ static VTABLE: ToolVTable = ToolVTable {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn create_tool() -> Tool {
-    let tool = ColorConvertTool::new("Color Convert Tool".to_string());
+    let tool = ColorConvertTool::new("颜色转换".to_string());
     create_algo_tool(tool, &VTABLE)
 }
