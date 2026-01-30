@@ -13,10 +13,6 @@ PluginManager::~PluginManager() {}
 
 PluginManager &PluginManager::instance() {
   static PluginManager instance;
-  // auto addr = reinterpret_cast<uintptr_t>(&instance);
-  // std::string addr_info =
-  //     std::format("PluginManager instance address: {:x}", addr);
-  // Logger::Info(addr_info);
   return instance;
 }
 
