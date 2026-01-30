@@ -39,4 +39,5 @@ target_link_libraries(${PROJECT_NAME}
         Qt::Gui
         Qt::Widgets
         qtadvanceddocking
+        algo_plugin
 )

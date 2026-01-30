@@ -4,11 +4,7 @@
 #include "DockWidget.h"
 #include <QFont>
 
-namespace ads {
-class CDockManager;
-}
-
-namespace controls::dockpanel {
+namespace controls::panels {
 class DockPanel : public ads::CDockWidget {
   Q_OBJECT
 public:
@@ -25,6 +21,6 @@ private:
   void loadFont();
   QFont _iconFont;
 };
-} // namespace controls::dockpanel
+} // namespace controls::panels
 
 #endif // DOCKPANEL_H

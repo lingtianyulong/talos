@@ -14,6 +14,7 @@
 #include <QImageReader>
 #include <QLabel>
 #include <QLinearGradient>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -38,12 +39,14 @@
 #include "controls/buttons/default_button.h"
 #include "controls/dock_panel/dock_panel.h"
 #include "controls/messagebox/messagebox.h"
+#include "controls/widgets/toolbox.h"
 
-using namespace controls::dockpanel;
+using namespace controls::panels;
 using namespace controls::buttons;
 using namespace controls::image_viewer;
 using namespace controls::messagebox;
 using namespace talos::screen_capture;
+using namespace controls::widgets;
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::MainWidget) {
@@ -360,8 +363,25 @@ void MainWidget::initUI() {
   centralDock->setWidget(centralWidget);
   manager->setCentralWidget(centralDock);
 
+  // QListWidget *toolbox = new QListWidget(this);
+  // toolbox->setDragEnabled(true);
+  // toolbox->setViewMode(QListView::IconMode);
+  // toolbox->setIconSize(QSize(48, 48));
+  // toolbox->setStyleSheet("QListWidget {"
+  //                        "background: transparent;"
+  //                        "border: none;"
+  //                        "}");
+
+  // QListWidgetItem *item = new QListWidgetItem("加法算法");
+  // item->setData(Qt::UserRole, "AddNode"); // 算法类型
+  // QListWidgetItem *item2 = new QListWidgetItem("减法算法");
+  // item2->setData(Qt::UserRole, "SubNode"); // 算法类型
+  // toolbox->addItem(item);
+  // toolbox->addItem(item2);
+  ToolBox *toolbox = new ToolBox(this);
   DockPanel *toolDock = new DockPanel(manager, "工具");
   toolDock->initFeatures();
+  toolDock->setWidget(toolbox);
   manager->addDockWidget(ads::LeftDockWidgetArea, toolDock);
 
   // 添加其他停靠窗口

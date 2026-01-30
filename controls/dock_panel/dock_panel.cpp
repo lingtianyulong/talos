@@ -8,7 +8,7 @@
 #include <QPainter>
 #include <QPixmap>
 
-namespace controls::dockpanel {
+namespace controls::panels {
 DockPanel::DockPanel(const QString &title, QWidget *parent)
     : ads::CDockWidget(title, parent) {
   loadFont();
@@ -125,4 +125,4 @@ void DockPanel::setIconfont(const QString &font) {
   setIcon(QIcon(pixmap));
   this->tabWidget()->setIconSize(QSize(16, 16));
 }
-} // namespace controls::dockpanel
+} // namespace controls::panels

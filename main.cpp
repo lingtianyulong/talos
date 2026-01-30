@@ -39,8 +39,6 @@ int main(int argc, char *argv[]) {
   Logger::Info("Loading plugins from: " + pluginPath.toStdString());
   if (PluginManager::instance().loadAlgoPlugins(pluginPath)) {
     QCoreApplication::addLibraryPath(pluginPath);
-    Logger::Info("Plugins loaded successfully, tool count: " +
-                 std::to_string(PluginManager::instance().toolCount()));
   } else {
     Logger::Error("Failed to load plugins from: " + pluginPath.toStdString());
   }

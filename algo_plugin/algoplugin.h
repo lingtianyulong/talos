@@ -36,7 +36,8 @@ public:
 
   bool loadAlgoPlugins(const QString &pluginDir);
   void unloadAlgoPlugins();
-  size_t toolCount() const { return _tools.size(); }
+
+  const std::map<std::string, Tool> &tools() const;
 
 private:
   PluginManager();

@@ -114,5 +114,10 @@ void PluginManager::unloadAlgoPlugins() {
   }
   _libs.clear();
 }
+/// @brief 获取所有工具
+/// @return 所有工具的映射表
+const std::map<std::string, Tool> &PluginManager::tools() const {
+  return _tools;
+}
 
 } // namespace talos::plugin
