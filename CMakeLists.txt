@@ -10,6 +10,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
+include(FetchContent)
+FetchContent_Declare(GSL
+    GIT_REPOSITORY "https://github.com/microsoft/GSL"
+    GIT_TAG "v4.2.0"
+    GIT_SHALLOW ON
+)
+
+FetchContent_MakeAvailable(GSL)
 
 foreach(CONFIG_TYPE Debug Release)
     string(TOUPPER ${CONFIG_TYPE} CONFIG_TYPE_UPPER)
@@ -109,6 +117,7 @@ target_link_libraries(talos
         Qt::QuickWidgets
         Qt::QuickControls2
         qtadvanceddocking
+        Microsoft.GSL::GSL
 )
 
 include(GNUInstallDirs)

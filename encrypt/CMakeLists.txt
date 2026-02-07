@@ -20,4 +20,4 @@ else ()
     set(ENCRYPT_LIB_PATH "${CMAKE_SOURCE_DIR}/rust_libs/release/encryption.lib")
 endif ()
 
-target_link_libraries(${LIBRARY_NAME} PUBLIC ${ENCRYPT_LIB_PATH})
+target_link_libraries(${LIBRARY_NAME} PUBLIC ${ENCRYPT_LIB_PATH} Microsoft.GSL::GSL)
