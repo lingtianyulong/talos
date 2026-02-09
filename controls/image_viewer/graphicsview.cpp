@@ -6,6 +6,7 @@
 
 #include <QPen>
 #include <QPointer>
+#include <algorithm>
 #include <qevent.h>
 
 namespace controls::image_viewer {
@@ -208,11 +209,7 @@ void GraphicsView::zoomIn() {
     return;
   }
 
-  if (_curRatio * _scaleFactor < _maxRatio) {
-    _curRatio *= _scaleFactor;
-  } else {
-    _curRatio = _maxRatio;
-  }
+  _curRatio = std::clamp(_curRatio * _scaleFactor, _minRatio, _maxRatio);
 
   qreal x = (_dstRect.width() - _pixmap.width() * _curRatio) / 2;
   qreal y = (_dstRect.height() - _pixmap.height() * _curRatio) / 2;
@@ -232,11 +229,7 @@ void GraphicsView::zoomOut() {
     return;
   }
 
-  if (_curRatio / _scaleFactor > _minRatio) {
-    _curRatio /= _scaleFactor;
-  } else {
-    _curRatio = _minRatio;
-  }
+  _curRatio = std::clamp(_curRatio / _scaleFactor, _minRatio, _maxRatio);
 
   qreal x = (_dstRect.width() - _pixmap.width() * _curRatio) / 2;
   qreal y = (_dstRect.height() - _pixmap.height() * _curRatio) / 2;
