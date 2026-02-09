@@ -10,6 +10,8 @@
 #include "config/url_config/api_config.h"
 #include "controls/buttons/default_button.h"
 #include "controls/buttons/primary_button.h"
+#include "controls/inputs/input_password.h"
+#include "controls/inputs/input_user.h"
 #include "controls/messagebox/messagebox.h"
 #include "db/db_util.h"
 #include "encrypt/encrypt_util.h"
@@ -36,6 +38,14 @@ using namespace controls::messagebox;
 RegisterDialog::RegisterDialog(QWidget* parent, int flag)
     : QDialog(parent), ui(new Ui::registerdialog) {
     ui->setupUi(this);
+
+    if (!_userInput) {
+        _userInput = new RegisterUserInput(this);
+    }
+
+    if (!_passwordInput) {
+        _passwordInput = new RegisterPasswordInput(this);
+    }
 
     this->setWindowIcon(QIcon(":/icons/icon.ico"));
     _flag = flag;

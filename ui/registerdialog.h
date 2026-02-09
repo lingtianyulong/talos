@@ -5,10 +5,19 @@
 #ifndef REGISTERDIALOG_H
 #define REGISTERDIALOG_H
 
-#include "../../controls/inputs/input_password.h"
-#include "../../controls/inputs/input_user.h"
+// -------------------
+// 使用前置声明
+// 减少头文件依赖
+// 加快编译速度
+// 避免循环依赖
+// -------------------
+namespace controls::inputs {
+class InputUser;
+class InputPassword;
+}  // namespace controls::inputs
 
 #include <QDialog>
+#include <QPointer>
 
 using RegisterUserInput = controls::inputs::InputUser;
 using RegisterPasswordInput = controls::inputs::InputPassword;
@@ -35,8 +44,8 @@ private:
     void init();
     void registerClicked();
 
-    QPointer<RegisterUserInput> _userInput = new RegisterUserInput(this);
-    QPointer<RegisterPasswordInput> _passwordInput = new RegisterPasswordInput(this);
+    QPointer<RegisterUserInput> _userInput = nullptr;
+    QPointer<RegisterPasswordInput> _passwordInput = nullptr;
 
     Ui::registerdialog* ui;
 
