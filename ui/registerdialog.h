@@ -5,11 +5,10 @@
 #ifndef REGISTERDIALOG_H
 #define REGISTERDIALOG_H
 
-#include <QDialog>
-
 #include "../../controls/inputs/input_password.h"
 #include "../../controls/inputs/input_user.h"
 
+#include <QDialog>
 
 using RegisterUserInput = controls::inputs::InputUser;
 using RegisterPasswordInput = controls::inputs::InputPassword;
@@ -23,26 +22,25 @@ class registerdialog;
 QT_END_NAMESPACE
 
 class RegisterDialog : public QDialog {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit RegisterDialog(QWidget *parent = nullptr, int flag = 0);
+    explicit RegisterDialog(QWidget* parent = nullptr, int flag = 0);
 
-  ~RegisterDialog() override;
+    ~RegisterDialog() override;
 
-  void setUserName(const QString &userName);
+    void setUserName(const QString& userName);
 
 private:
-  void init();
-  void registerClicked();
+    void init();
+    void registerClicked();
 
-  QPointer<RegisterUserInput> _userInput = new RegisterUserInput(this);
-  QPointer<RegisterPasswordInput> _passwordInput =
-      new RegisterPasswordInput(this);
+    QPointer<RegisterUserInput> _userInput = new RegisterUserInput(this);
+    QPointer<RegisterPasswordInput> _passwordInput = new RegisterPasswordInput(this);
 
-  Ui::registerdialog *ui;
+    Ui::registerdialog* ui;
 
-  int _flag = 0; //!< 0 注册用户, 1 修改密码
+    int _flag = 0;  //!< 0 注册用户, 1 修改密码
 };
 
-#endif // REGISTERDIALOG_H
+#endif  // REGISTERDIALOG_H

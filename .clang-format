@@ -1,0 +1,52 @@
+# 基础风格
+BasedOnStyle: LLVM
+Language: Cpp
+Standard: c++20
+
+# 缩进
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# 大括号（偏 Qt / Chromium 风格）
+BreakBeforeBraces: Attach
+
+# 行宽
+ColumnLimit: 100
+
+# 指针对齐
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+# 连续声明/赋值对齐
+# AlignConsecutiveDeclarations: true
+# AlignConsecutiveAssignments: true
+
+# 函数
+AllowShortFunctionsOnASingleLine: Empty
+AlwaysBreakAfterReturnType: None
+
+# if / for / while
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# include 顺序
+SortIncludes: true
+IncludeBlocks: Regroup
+
+# 命名空间
+NamespaceIndentation: None
+FixNamespaceComments: true
+
+# 注释
+ReflowComments: true
+SpacesBeforeTrailingComments: 2
+
+# Qt 宏 / 信号槽更友好
+#MacroBlockBegin: "Q_OBJECT"
+#MacroBlockEnd: ""
+
+# 兼容 C / FFI
+DerivePointerAlignment: false
+
+AccessModifierOffset: -4
