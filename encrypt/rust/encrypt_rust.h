@@ -10,16 +10,16 @@ extern "C" {
 #endif
 
 // 将密码进行加密
-const char *encrypt_password_argon2(const char *password);
+const char* encrypt_password_argon2(const char* password);
 
 // 校验密码
-bool verify_password_argon2(const char *password, const char *store_password);
+bool verify_password_argon2(const char* password, const char* store_password);
 
 // 释放由 encrypt_password_argon2 生成的密码
-void release_encrypted_password(char *password);
+void release_encrypted_password(char* password);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif //TALOS_ENCRYPT_RUST_H
+#endif  // TALOS_ENCRYPT_RUST_H

@@ -5,6 +5,10 @@ set(CMAKE_PREFIX_PATH "D:/Qt/6.8.3/msvc2022_64")
 
 set(CMAKE_CXX_STANDARD 20)
 
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 # 设置不同配置的输出目录，统一放在 build/<Config>
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
