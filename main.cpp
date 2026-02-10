@@ -1,4 +1,5 @@
 #include "algo_plugin/algoplugin.h"
+#include "base/lifetime/lifetime.h"
 #include "logger/logger.h"
 #include "ui/logindialog.h"
 #include "ui/mainwidget.h"
@@ -64,6 +65,27 @@ int main(int argc, char* argv[]) {
         }
     }
     qApp->setStyleSheet(qss);
+
+    {
+        struct Foo {
+            int x;
+            Foo(int val) : x(val) {
+                auto info = std::format("Foo constructed with value: {}", x);
+                Logger::Info(info);
+            }
+
+            ~Foo() {
+                auto info = std::format("Foo destroyed with value: {}", x);
+                Logger::Info(info);
+            }
+        };
+        auto foo = new Foo(42);
+        talos::base::lifetime::Lifetime lifetime;
+        lifetime.add([foo]() {
+            Logger::Info("Lifetime destroyed");
+            delete foo;
+        });
+    }
 
     // auto dlg = new LoginDialog();
     // if (dlg->exec() != QDialog::Accepted) {

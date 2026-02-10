@@ -92,6 +92,7 @@ set_target_properties(qtadvanceddocking PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${ADS_ROOT}/include"
 )
 
+add_subdirectory(base)            # 添加 base 目录
 add_subdirectory(logger)         # 然后是 logger
 add_subdirectory(config)         # 添加 config 目录
 add_subdirectory(utils)          # 添加 utils 目录
@@ -105,6 +106,7 @@ add_subdirectory(ui)             # 最后是 ui
 
 target_link_libraries(talos
     PRIVATE
+        talos_base_lib
         utils
         config
         ui
