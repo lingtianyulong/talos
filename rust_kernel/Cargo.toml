@@ -7,7 +7,7 @@ edition = "2024"
 members = [
     "database",
     "draw_core",
-    "encryption",
+    "encryption", "lib_base",
     "libdump",
     "logger",
     "netlib",
