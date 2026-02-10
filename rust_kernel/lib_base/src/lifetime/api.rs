@@ -83,10 +83,12 @@ pub extern "C" fn lifetime_destroy(lifetime: *mut Lifetime) {
 }
 
 /// 释放 lifetime 结构体本身的内存
+#[unsafe(no_mangle)]
 pub extern "C" fn lifetime_free(lifetime: *mut Lifetime) {
     if lifetime.is_null() {
         return;
     }
+
     unsafe {
         let _ = Box::from_raw(lifetime as *mut lifetime_inner::LifetimeInner);
     }

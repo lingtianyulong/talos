@@ -88,6 +88,7 @@ fn main() {
         "secure_store",
         "netlib",
         "screen_capture",
+        "lib_base",
     ];
     for project in projects {
         println!("正在构建项目: {}", project);
