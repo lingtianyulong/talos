@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.19)
 project(talos LANGUAGES CXX)
 
+# 生成 compile_commands.json，供 clangd 等工具解析头文件与标准库
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_PREFIX_PATH "D:/Qt/6.8.3/msvc2022_64")
 
 set(CMAKE_CXX_STANDARD 20)

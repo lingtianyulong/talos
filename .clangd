@@ -1,0 +1,9 @@
+CompileFlags:
+  CompilationDatabase: build
+  Add:
+    - -std=c++20
+    - /imsvcC:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/include
+    - /imsvcC:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt
+    - /imsvcC:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared
+    - /imsvcC:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um
+    - /imsvcC:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/winrt
