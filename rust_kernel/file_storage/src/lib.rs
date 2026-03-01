@@ -10,7 +10,19 @@ mod tests {
     use super::*;
     use std::fs;
     use std::time::{SystemTime, UNIX_EPOCH};
-    use local_files::local_storage::{FileReader, FileWriter, Record};
+    use local_files::local_storage::{FileReader, FileWriter};
+
+    use rkyv::{Archive, Deserialize, Serialize};
+    use bytecheck::CheckBytes;
+
+    /// 测试数据结构
+    #[derive(Archive, Deserialize, Serialize, Debug, CheckBytes, Clone)]
+    #[bytecheck(verify)]
+    pub struct Record {
+        pub id: u64,
+        pub value: f64,
+    }
+
 
     #[test]
     fn it_works() {
