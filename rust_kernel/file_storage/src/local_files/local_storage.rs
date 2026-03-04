@@ -14,12 +14,7 @@ use rkyv::util::AlignedVec;
 use memmap2::Mmap;
 
 
-#[derive(Archive, Deserialize, Serialize, Debug, CheckBytes, Clone)]
-#[bytecheck(verify)]
-pub struct Record {
-    pub id: u64,
-    pub value: f64,
-}
+
 
 pub struct FileWriter {
     file: File,
