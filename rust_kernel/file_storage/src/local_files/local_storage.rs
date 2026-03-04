@@ -3,6 +3,7 @@ use bytecheck::CheckBytes;
 use rkyv::{Archive, Deserialize, Serialize};
 use std::fs::{ File, OpenOptions };
 use std::io::{ Seek, SeekFrom, Write };
+use std::sync::{Arc, Mutex};
 use std::time::{ SystemTime, UNIX_EPOCH };
 use anyhow::Result;
 use crc32fast::Hasher;
@@ -17,7 +18,7 @@ use memmap2::Mmap;
 
 
 pub struct FileWriter {
-    file: File,
+    file: Mutex<File>,
 }
 
 #[allow(dead_code)]
@@ -45,14 +46,14 @@ impl FileWriter {
         }
 
         file.seek(SeekFrom::End(0))?;
-        Ok(Self { file })
+        Ok(Self { file: Mutex::new(file) })
     }
   
    fn current_ts() -> u64 {
         SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis() as u64
     }
 
-    pub fn append<T> (&mut self, data: &[T]) -> Result<()>
+    pub fn append<T>(&self, data: &[T]) -> Result<()>
     where 
         T: Archive + Clone + for<'a> Serialize<HighSerializer<AlignedVec, ArenaHandle<'a>, RkyvError>>, {
         // 序列化
@@ -69,12 +70,13 @@ impl FileWriter {
             crc32: crc,
         };
 
-        self.file.write_all(bytemuck::bytes_of(&header))?;
-        let pad = Self::alignment_padding(self.file.stream_position()?, 8);
+        let mut file = self.file.lock().map_err(|_| anyhow::anyhow!("FileWriter mutex poisoned"))?;
+        file.write_all(bytemuck::bytes_of(&header))?;
+        let pad = Self::alignment_padding(file.stream_position()?, 8);
         if pad > 0 {
-            self.file.write_all(&vec![0u8; pad])?;
+            file.write_all(&vec![0u8; pad])?;
         }
-        self.file.write_all(&bytes)?;
+        file.write_all(&bytes)?;
         Ok(())
     } 
 }
@@ -82,7 +84,7 @@ impl FileWriter {
 
 #[allow(dead_code)]
 pub struct FileReader {
-    mmap: Mmap,
+    mmap: Arc<Mmap>,
 }
 
 #[allow(dead_code)]
@@ -104,7 +106,7 @@ impl FileReader {
         if header.magic != 0xDEADBEEF {
             anyhow::bail!("Invalid file header");
         }
-        Ok(Self { mmap })
+        Ok(Self { mmap: Arc::new(mmap) })
     }
     
     pub fn iterate<T>(&self) -> Result<()>
