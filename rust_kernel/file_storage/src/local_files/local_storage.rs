@@ -24,12 +24,10 @@ pub struct FileWriter {
 #[allow(dead_code)]
 impl FileWriter {
     fn alignment_padding(offset: u64, align: u64) -> usize {
-        let rem = offset % align;
-        if rem == 0 {
-            0
-        } else {
-            (align - rem) as usize
+        if align == 0 {
+            return 0;
         }
+        ((align - (offset % align)) % align) as usize
     }
 
     pub fn new(path: &str) -> Result<Self> {
