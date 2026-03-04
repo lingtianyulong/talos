@@ -46,7 +46,7 @@ mod tests {
             Record { id: 2, value: 3.5 },
         ];
 
-        let mut writer = FileWriter::new(&path_str)?;
+        let writer = Arc::new(FileWriter::new(&path_str)?);
         writer.append(&chunk)?;
         drop(writer);
 

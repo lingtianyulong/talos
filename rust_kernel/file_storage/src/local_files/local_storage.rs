@@ -14,9 +14,6 @@ use rkyv::ser::allocator::ArenaHandle;
 use rkyv::util::AlignedVec;
 use memmap2::Mmap;
 
-
-
-
 pub struct FileWriter {
     file: Mutex<File>,
 }
